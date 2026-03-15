@@ -123,35 +123,35 @@ export default function WizardPage() {
       case 0:
         return (
           <motion.div key="s0" variants={variants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }}>
-            <h2 style={{ fontSize: 32, fontWeight: 700, textAlign: 'center', marginBottom: 4 }}>Choose Your Flat</h2>
-            <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', marginBottom: 24, fontSize: 15 }}>Select your property type to begin the custom design process.</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
+            <h2 style={{ fontSize: 30, fontWeight: 700, textAlign: 'center', marginBottom: 4 }}>Choose Your Flat</h2>
+            <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', marginBottom: 20, fontSize: 15 }}>Select your property type to begin the custom design process.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
               {flatTypes.map(ft => (
                 <button key={ft.id} onClick={() => updatePreferences({ flatType: ft.id })}
                   style={{
                     background: preferences.flatType === ft.id ? 'var(--color-accent-bg)' : 'var(--color-bg)',
                     border: `2px solid ${preferences.flatType === ft.id ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                    borderRadius: 16, padding: '16px', cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s',
+                    borderRadius: 14, padding: '14px', cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s',
                     position: 'relative',
                   }}>
                   {preferences.flatType === ft.id && (
-                    <span style={{ position: 'absolute', top: 10, right: 12, background: 'var(--color-accent)', color: '#fff', fontSize: 10, padding: '3px 10px', borderRadius: 6, fontWeight: 600 }}>SELECTED</span>
+                    <span style={{ position: 'absolute', top: 8, right: 10, background: 'var(--color-accent)', color: '#fff', fontSize: 10, padding: '2px 9px', borderRadius: 6, fontWeight: 600 }}>SELECTED</span>
                   )}
-                  <div style={{ width: 48, height: 48, margin: '0 auto 12px', background: 'var(--color-accent-light)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ color: 'var(--color-accent)', fontSize: 20 }}>🏠</span>
+                  <div style={{ width: 42, height: 42, margin: '0 auto 10px', background: 'var(--color-accent-light)', borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ color: 'var(--color-accent)', fontSize: 18 }}>🏠</span>
                   </div>
-                  <div style={{ fontWeight: 700, fontSize: 15, color: preferences.flatType === ft.id ? 'var(--color-accent)' : 'var(--color-text)', marginBottom: 4 }}>{ft.label}</div>
-                  <div style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>{ft.desc}</div>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: preferences.flatType === ft.id ? 'var(--color-accent)' : 'var(--color-text)', marginBottom: 3 }}>{ft.label}</div>
+                  <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>{ft.desc}</div>
                 </button>
               ))}
             </div>
-            <div style={{ textAlign: 'center', marginBottom: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.05em', color: 'var(--color-accent)', marginBottom: 12 }}>SELECT FOCUS AREAS (OPTIONAL)</div>
+            <div style={{ textAlign: 'center', marginBottom: 12 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.05em', color: 'var(--color-accent)', marginBottom: 10 }}>SELECT FOCUS AREAS (OPTIONAL)</div>
               <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
                 {roomTypes.map(rt => (
                   <button key={rt.id} onClick={() => updatePreferences({ roomType: rt.id })}
                     style={{
-                      padding: '10px 22px', borderRadius: 100, fontSize: 14, fontWeight: 500, cursor: 'pointer',
+                      padding: '9px 20px', borderRadius: 100, fontSize: 13, fontWeight: 500, cursor: 'pointer',
                       background: preferences.roomType === rt.id ? 'var(--color-accent)' : 'transparent',
                       color: preferences.roomType === rt.id ? '#fff' : 'var(--color-text-secondary)',
                       border: `1px solid ${preferences.roomType === rt.id ? 'var(--color-accent)' : 'var(--color-border)'}`,
@@ -411,7 +411,7 @@ export default function WizardPage() {
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '24px 24px 40px', overflowY: 'auto' }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '16px 24px 16px', overflow: 'hidden' }}>
         <div style={{ width: '100%', maxWidth: 800 }}>
           <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
         </div>
