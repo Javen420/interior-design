@@ -57,7 +57,6 @@ A multi-step guided experience that captures:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/Javen420/interior-design.git
-   cd kairos
    ```
 
 2. **Install dependencies**:
