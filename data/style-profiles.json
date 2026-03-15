@@ -1,0 +1,62 @@
+[
+  {
+    "id": "scandinavian",
+    "name": "Scandinavian",
+    "tagline": "Clean lines, natural warmth",
+    "colorPalette": ["#F5F0E8", "#D4B896", "#8B7355", "#2C2C2C", "#E8DFD0"],
+    "wallColor": "#F5F0E8",
+    "floorColor": "#D4B896",
+    "materials": ["Light Oak", "Linen", "Matte White", "Wool"],
+    "description": "Emphasizes simplicity, functionality, and natural materials. Light woods, neutral tones, and cozy textures create a serene, inviting atmosphere."
+  },
+  {
+    "id": "minimalist",
+    "name": "Minimalist",
+    "tagline": "Less is more, refined simplicity",
+    "colorPalette": ["#FFFFFF", "#F0F0F0", "#333333", "#666666", "#E0E0E0"],
+    "wallColor": "#FFFFFF",
+    "floorColor": "#E0E0E0",
+    "materials": ["Concrete", "Steel", "Glass", "Matte Lacquer"],
+    "description": "Focuses on essential elements, clean surfaces, and a monochromatic palette. Every piece serves a purpose with no visual clutter."
+  },
+  {
+    "id": "industrial",
+    "name": "Industrial",
+    "tagline": "Raw textures, urban character",
+    "colorPalette": ["#2C2C2C", "#8B8B8B", "#C4A882", "#D4D4D4", "#6B4E3D"],
+    "wallColor": "#D4D4D4",
+    "floorColor": "#8B8B8B",
+    "materials": ["Exposed Brick", "Black Steel", "Reclaimed Wood", "Concrete"],
+    "description": "Celebrates raw, unfinished aesthetics with exposed materials. Metal, wood, and brick combine for a bold, urban feel."
+  },
+  {
+    "id": "japandi",
+    "name": "Japandi",
+    "tagline": "Eastern calm meets Nordic function",
+    "colorPalette": ["#F7F3ED", "#C8B89A", "#5C5C5C", "#8B7D6B", "#E6DED3"],
+    "wallColor": "#F7F3ED",
+    "floorColor": "#C8B89A",
+    "materials": ["Bamboo", "Linen", "Clay", "Light Ash"],
+    "description": "A harmonious blend of Japanese minimalism and Scandinavian coziness. Natural textures, muted palettes, and intentional design."
+  },
+  {
+    "id": "mid-century-modern",
+    "name": "Mid-Century Modern",
+    "tagline": "Retro elegance, organic forms",
+    "colorPalette": ["#F5E6D3", "#D4763C", "#2D5F4E", "#1A1A2E", "#C9A87C"],
+    "wallColor": "#F5E6D3",
+    "floorColor": "#C9A87C",
+    "materials": ["Walnut", "Teak", "Brass", "Velvet"],
+    "description": "Iconic mid-20th century design with organic curves, tapered legs, and bold accent colors. Timeless and sophisticated."
+  },
+  {
+    "id": "contemporary",
+    "name": "Contemporary",
+    "tagline": "Current trends, bold statements",
+    "colorPalette": ["#1A1A2E", "#E6C9A8", "#D4A574", "#F0EDE8", "#3D3D5C"],
+    "wallColor": "#F0EDE8",
+    "floorColor": "#E6C9A8",
+    "materials": ["Marble", "Velvet", "Brushed Gold", "Lacquered Wood"],
+    "description": "Reflects current design trends with a mix of textures, bold accents, and curated statement pieces. Luxurious yet approachable."
+  }
+]

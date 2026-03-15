@@ -1,0 +1,202 @@
+[
+  {
+    "id": "contractor-01",
+    "name": "TanBuild Construction",
+    "specialty": ["Flooring", "Wall Treatments"],
+    "projectsCompleted": 34,
+    "activeProjects": 3,
+    "status": "active",
+    "satisfactionRating": 4.6,
+    "avgCompletionDays": 42,
+    "onTimeRate": 0.88,
+    "stageDelays": {
+      "demolition": 0,
+      "construction": 2,
+      "installation": 1,
+      "handover": 0
+    },
+    "areaOverruns": {
+      "flooring": 0.05,
+      "walls": 0.08,
+      "electrical": 0.02,
+      "plumbing": 0.0
+    },
+    "totalRevenue": 285000,
+    "avgProjectCost": 8382
+  },
+  {
+    "id": "contractor-02",
+    "name": "Lee & Sons Carpentry",
+    "specialty": ["Furniture", "Carpentry"],
+    "projectsCompleted": 52,
+    "activeProjects": 5,
+    "status": "active",
+    "satisfactionRating": 4.8,
+    "avgCompletionDays": 38,
+    "onTimeRate": 0.94,
+    "stageDelays": {
+      "demolition": 0,
+      "construction": 1,
+      "installation": 0,
+      "handover": 0
+    },
+    "areaOverruns": {
+      "flooring": 0.0,
+      "walls": 0.0,
+      "electrical": 0.0,
+      "plumbing": 0.0
+    },
+    "totalRevenue": 410000,
+    "avgProjectCost": 7885
+  },
+  {
+    "id": "contractor-03",
+    "name": "SparksElec Pte Ltd",
+    "specialty": ["Electrical", "Lighting"],
+    "projectsCompleted": 28,
+    "activeProjects": 4,
+    "status": "active",
+    "satisfactionRating": 4.3,
+    "avgCompletionDays": 30,
+    "onTimeRate": 0.82,
+    "stageDelays": {
+      "demolition": 0,
+      "construction": 0,
+      "installation": 3,
+      "handover": 1
+    },
+    "areaOverruns": {
+      "flooring": 0.0,
+      "walls": 0.0,
+      "electrical": 0.12,
+      "plumbing": 0.0
+    },
+    "totalRevenue": 196000,
+    "avgProjectCost": 7000
+  },
+  {
+    "id": "contractor-04",
+    "name": "AquaFlow Plumbing Co.",
+    "specialty": ["Plumbing", "Kitchen Fittings"],
+    "projectsCompleted": 19,
+    "activeProjects": 2,
+    "status": "active",
+    "satisfactionRating": 4.5,
+    "avgCompletionDays": 25,
+    "onTimeRate": 0.89,
+    "stageDelays": {
+      "demolition": 0,
+      "construction": 1,
+      "installation": 1,
+      "handover": 0
+    },
+    "areaOverruns": {
+      "flooring": 0.0,
+      "walls": 0.0,
+      "electrical": 0.0,
+      "plumbing": 0.1
+    },
+    "totalRevenue": 142500,
+    "avgProjectCost": 7500
+  },
+  {
+    "id": "contractor-05",
+    "name": "PrimeCoat Painters",
+    "specialty": ["Painting", "Wall Treatments"],
+    "projectsCompleted": 61,
+    "activeProjects": 6,
+    "status": "active",
+    "satisfactionRating": 4.7,
+    "avgCompletionDays": 18,
+    "onTimeRate": 0.95,
+    "stageDelays": {
+      "demolition": 0,
+      "construction": 0,
+      "installation": 0,
+      "handover": 0
+    },
+    "areaOverruns": {
+      "flooring": 0.0,
+      "walls": 0.03,
+      "electrical": 0.0,
+      "plumbing": 0.0
+    },
+    "totalRevenue": 305000,
+    "avgProjectCost": 5000
+  },
+  {
+    "id": "contractor-06",
+    "name": "Kwan Brothers Reno",
+    "specialty": ["Full Renovation", "Demolition"],
+    "projectsCompleted": 15,
+    "activeProjects": 2,
+    "status": "flagged",
+    "satisfactionRating": 3.4,
+    "avgCompletionDays": 55,
+    "onTimeRate": 0.60,
+    "stageDelays": {
+      "demolition": 3,
+      "construction": 5,
+      "installation": 4,
+      "handover": 2
+    },
+    "areaOverruns": {
+      "flooring": 0.15,
+      "walls": 0.18,
+      "electrical": 0.10,
+      "plumbing": 0.12
+    },
+    "totalRevenue": 180000,
+    "avgProjectCost": 12000
+  },
+  {
+    "id": "contractor-07",
+    "name": "ClearSpace Demolition",
+    "specialty": ["Demolition", "Hacking"],
+    "projectsCompleted": 44,
+    "activeProjects": 3,
+    "status": "active",
+    "satisfactionRating": 4.4,
+    "avgCompletionDays": 12,
+    "onTimeRate": 0.91,
+    "stageDelays": {
+      "demolition": 1,
+      "construction": 0,
+      "installation": 0,
+      "handover": 0
+    },
+    "areaOverruns": {
+      "flooring": 0.02,
+      "walls": 0.04,
+      "electrical": 0.0,
+      "plumbing": 0.0
+    },
+    "totalRevenue": 220000,
+    "avgProjectCost": 5000
+  },
+  {
+    "id": "contractor-08",
+    "name": "GreenHome Solutions",
+    "specialty": ["Eco Materials", "Sustainable Design"],
+    "projectsCompleted": 22,
+    "activeProjects": 3,
+    "status": "active",
+    "satisfactionRating": 4.6,
+    "avgCompletionDays": 35,
+    "onTimeRate": 0.86,
+    "stageDelays": {
+      "demolition": 0,
+      "construction": 2,
+      "installation": 1,
+      "handover": 0
+    },
+    "areaOverruns": {
+      "flooring": 0.06,
+      "walls": 0.04,
+      "electrical": 0.03,
+      "plumbing": 0.02
+    },
+    "totalRevenue": 198000,
+    "avgProjectCost": 9000
+  }
+]

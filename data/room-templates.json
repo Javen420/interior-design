@@ -1,0 +1,218 @@
+[
+  {
+    "id": "3room-living",
+    "name": "3-Room BTO Living Room",
+    "flatType": "3room-bto",
+    "roomType": "living-room",
+    "width": 5.5,
+    "length": 3.6,
+    "sqm": 19.8,
+    "averageCost": 12000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 5.5, "y2": 0 },
+      { "x1": 5.5, "y1": 0, "x2": 5.5, "y2": 3.6 },
+      { "x1": 5.5, "y1": 3.6, "x2": 0, "y2": 3.6 },
+      { "x1": 0, "y1": 3.6, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 2.5, "y": 3.6, "width": 0.9, "side": "bottom" }],
+    "windows": [{ "x": 5.5, "y": 1.0, "width": 1.2, "side": "right" }]
+  },
+  {
+    "id": "3room-bedroom",
+    "name": "3-Room BTO Master Bedroom",
+    "flatType": "3room-bto",
+    "roomType": "bedroom",
+    "width": 3.4,
+    "length": 3.2,
+    "sqm": 10.9,
+    "averageCost": 8000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 3.4, "y2": 0 },
+      { "x1": 3.4, "y1": 0, "x2": 3.4, "y2": 3.2 },
+      { "x1": 3.4, "y1": 3.2, "x2": 0, "y2": 3.2 },
+      { "x1": 0, "y1": 3.2, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.5, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 1.5, "y": 0, "width": 1.0, "side": "top" }]
+  },
+  {
+    "id": "3room-kitchen",
+    "name": "3-Room BTO Kitchen",
+    "flatType": "3room-bto",
+    "roomType": "kitchen",
+    "width": 3.0,
+    "length": 2.8,
+    "sqm": 8.4,
+    "averageCost": 7000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 3.0, "y2": 0 },
+      { "x1": 3.0, "y1": 0, "x2": 3.0, "y2": 2.8 },
+      { "x1": 3.0, "y1": 2.8, "x2": 0, "y2": 2.8 },
+      { "x1": 0, "y1": 2.8, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.0, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 3.0, "y": 0.8, "width": 1.0, "side": "right" }]
+  },
+  {
+    "id": "4room-living",
+    "name": "4-Room BTO Living Room",
+    "flatType": "4room-bto",
+    "roomType": "living-room",
+    "width": 7.0,
+    "length": 4.0,
+    "sqm": 28,
+    "averageCost": 15000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 7, "y2": 0 },
+      { "x1": 7, "y1": 0, "x2": 7, "y2": 4 },
+      { "x1": 7, "y1": 4, "x2": 0, "y2": 4 },
+      { "x1": 0, "y1": 4, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 3.5, "y": 4, "width": 0.9, "side": "bottom" }],
+    "windows": [{ "x": 7, "y": 1.5, "width": 1.5, "side": "right" }]
+  },
+  {
+    "id": "4room-bedroom",
+    "name": "4-Room BTO Master Bedroom",
+    "flatType": "4room-bto",
+    "roomType": "bedroom",
+    "width": 3.8,
+    "length": 3.4,
+    "sqm": 12.9,
+    "averageCost": 10000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 3.8, "y2": 0 },
+      { "x1": 3.8, "y1": 0, "x2": 3.8, "y2": 3.4 },
+      { "x1": 3.8, "y1": 3.4, "x2": 0, "y2": 3.4 },
+      { "x1": 0, "y1": 3.4, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.5, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 2.0, "y": 0, "width": 1.2, "side": "top" }]
+  },
+  {
+    "id": "4room-kitchen",
+    "name": "4-Room BTO Kitchen",
+    "flatType": "4room-bto",
+    "roomType": "kitchen",
+    "width": 3.5,
+    "length": 3.0,
+    "sqm": 10.5,
+    "averageCost": 9000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 3.5, "y2": 0 },
+      { "x1": 3.5, "y1": 0, "x2": 3.5, "y2": 3.0 },
+      { "x1": 3.5, "y1": 3.0, "x2": 0, "y2": 3.0 },
+      { "x1": 0, "y1": 3.0, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.2, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 3.5, "y": 1.0, "width": 1.0, "side": "right" }]
+  },
+  {
+    "id": "5room-living",
+    "name": "5-Room BTO Living Room",
+    "flatType": "5room-bto",
+    "roomType": "living-room",
+    "width": 8.0,
+    "length": 4.5,
+    "sqm": 36,
+    "averageCost": 20000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 8, "y2": 0 },
+      { "x1": 8, "y1": 0, "x2": 8, "y2": 4.5 },
+      { "x1": 8, "y1": 4.5, "x2": 0, "y2": 4.5 },
+      { "x1": 0, "y1": 4.5, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 4.0, "y": 4.5, "width": 0.9, "side": "bottom" }],
+    "windows": [{ "x": 8, "y": 1.5, "width": 1.8, "side": "right" }]
+  },
+  {
+    "id": "5room-bedroom",
+    "name": "5-Room BTO Master Bedroom",
+    "flatType": "5room-bto",
+    "roomType": "bedroom",
+    "width": 4.2,
+    "length": 3.8,
+    "sqm": 16.0,
+    "averageCost": 12000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 4.2, "y2": 0 },
+      { "x1": 4.2, "y1": 0, "x2": 4.2, "y2": 3.8 },
+      { "x1": 4.2, "y1": 3.8, "x2": 0, "y2": 3.8 },
+      { "x1": 0, "y1": 3.8, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.5, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 2.0, "y": 0, "width": 1.4, "side": "top" }]
+  },
+  {
+    "id": "5room-kitchen",
+    "name": "5-Room BTO Kitchen",
+    "flatType": "5room-bto",
+    "roomType": "kitchen",
+    "width": 4.0,
+    "length": 3.2,
+    "sqm": 12.8,
+    "averageCost": 11000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 4.0, "y2": 0 },
+      { "x1": 4.0, "y1": 0, "x2": 4.0, "y2": 3.2 },
+      { "x1": 4.0, "y1": 3.2, "x2": 0, "y2": 3.2 },
+      { "x1": 0, "y1": 3.2, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.2, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 4.0, "y": 1.0, "width": 1.2, "side": "right" }]
+  },
+  {
+    "id": "resale-living",
+    "name": "Resale HDB Living Room",
+    "flatType": "resale-hdb",
+    "roomType": "living-room",
+    "width": 6.5,
+    "length": 4.2,
+    "sqm": 27.3,
+    "averageCost": 18000,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 6.5, "y2": 0 },
+      { "x1": 6.5, "y1": 0, "x2": 6.5, "y2": 4.2 },
+      { "x1": 6.5, "y1": 4.2, "x2": 0, "y2": 4.2 },
+      { "x1": 0, "y1": 4.2, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 3.0, "y": 4.2, "width": 0.9, "side": "bottom" }],
+    "windows": [{ "x": 6.5, "y": 1.5, "width": 1.5, "side": "right" }]
+  },
+  {
+    "id": "resale-bedroom",
+    "name": "Resale HDB Master Bedroom",
+    "flatType": "resale-hdb",
+    "roomType": "bedroom",
+    "width": 3.6,
+    "length": 3.4,
+    "sqm": 12.2,
+    "averageCost": 9500,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 3.6, "y2": 0 },
+      { "x1": 3.6, "y1": 0, "x2": 3.6, "y2": 3.4 },
+      { "x1": 3.6, "y1": 3.4, "x2": 0, "y2": 3.4 },
+      { "x1": 0, "y1": 3.4, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.5, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 1.5, "y": 0, "width": 1.2, "side": "top" }]
+  },
+  {
+    "id": "resale-kitchen",
+    "name": "Resale HDB Kitchen",
+    "flatType": "resale-hdb",
+    "roomType": "kitchen",
+    "width": 3.2,
+    "length": 2.8,
+    "sqm": 9.0,
+    "averageCost": 8500,
+    "walls": [
+      { "x1": 0, "y1": 0, "x2": 3.2, "y2": 0 },
+      { "x1": 3.2, "y1": 0, "x2": 3.2, "y2": 2.8 },
+      { "x1": 3.2, "y1": 2.8, "x2": 0, "y2": 2.8 },
+      { "x1": 0, "y1": 2.8, "x2": 0, "y2": 0 }
+    ],
+    "doors": [{ "x": 0, "y": 1.0, "width": 0.8, "side": "left" }],
+    "windows": [{ "x": 3.2, "y": 0.8, "width": 1.0, "side": "right" }]
+  }
+]

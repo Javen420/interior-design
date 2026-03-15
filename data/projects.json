@@ -1,0 +1,95 @@
+[
+  {
+    "id": 1,
+    "name": "Scandinavian Living Room Makeover",
+    "client": "Emily Wong",
+    "designer": "Sarah Lim",
+    "flatType": "4-Room BTO",
+    "roomType": "Living Room",
+    "style": "Scandinavian",
+    "status": "in-progress",
+    "startDate": "2025-11-01",
+    "estimatedEnd": "2026-04-15",
+    "milestones": [
+      { "stage": "Design Consultation", "status": "completed", "date": "2025-11-01", "description": "Initial meeting to discuss preferences and requirements" },
+      { "stage": "Concept Development", "status": "completed", "date": "2025-11-15", "description": "Mood boards and initial concept sketches presented" },
+      { "stage": "Design Approval", "status": "completed", "date": "2025-12-01", "description": "Final design approved with minor revisions to shelving unit" },
+      { "stage": "Material Procurement", "status": "completed", "date": "2025-12-20", "description": "All materials ordered — custom oak shelving from Sweden" },
+      { "stage": "Demolition & Prep", "status": "completed", "date": "2026-01-10", "description": "Old flooring and wall finishes removed" },
+      { "stage": "Construction", "status": "in-progress", "date": "2026-02-01", "description": "Wall treatments and flooring installation underway" },
+      { "stage": "Furniture Installation", "status": "upcoming", "date": "2026-03-15", "description": "Custom and purchased furniture to be delivered and arranged" },
+      { "stage": "Final Handover", "status": "upcoming", "date": "2026-04-15", "description": "Final walkthrough, punch list, and keys handover" }
+    ],
+    "progressUpdates": [
+      { "date": "2025-11-01", "text": "Kick-off meeting completed. Emily loves the Scandinavian concept direction." },
+      { "date": "2025-11-08", "text": "Site measurements taken. Room dimensions confirmed at 7m × 4m." },
+      { "date": "2025-11-15", "text": "Three mood board concepts presented. Emily selected Option B — warm tones with light oak." },
+      { "date": "2025-11-28", "text": "3D renders finalized. Minor revision requested for shelving placement." },
+      { "date": "2025-12-01", "text": "Design formally approved. Procurement phase begins." },
+      { "date": "2025-12-12", "text": "Oak flooring sample approved. Order placed with 4-week lead time." },
+      { "date": "2025-12-20", "text": "All material orders confirmed. Custom shelving ETA: Jan 25." },
+      { "date": "2026-01-10", "text": "Demolition started. Old vinyl flooring removed. Walls prepped for painting." },
+      { "date": "2026-01-20", "text": "Electrical rewiring for new pendant lighting completed." },
+      { "date": "2026-02-01", "text": "Oak flooring installation begins. Expected completion: Feb 15." },
+      { "date": "2026-02-15", "text": "Flooring done! Walls painted in Eggshell White. Looking beautiful." },
+      { "date": "2026-03-01", "text": "Feature wall with oak slat paneling installed. Stunning result." }
+    ],
+    "budget": {
+      "total": 17500,
+      "breakdown": [
+        { "category": "Flooring", "estimated": 3500, "actual": 3200 },
+        { "category": "Wall Treatments", "estimated": 2000, "actual": 2400 },
+        { "category": "Furniture", "estimated": 6500, "actual": 6500 },
+        { "category": "Lighting", "estimated": 2000, "actual": 1800 },
+        { "category": "Soft Furnishings", "estimated": 1500, "actual": 1400 },
+        { "category": "Labour & Installation", "estimated": 2000, "actual": 2100 }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "name": "Japandi Master Bedroom Retreat",
+    "client": "Kevin Loh",
+    "designer": "Yuki Nakamura",
+    "flatType": "5-Room BTO",
+    "roomType": "Bedroom",
+    "style": "Japandi",
+    "status": "completed",
+    "startDate": "2025-06-01",
+    "estimatedEnd": "2025-10-30",
+    "milestones": [
+      { "stage": "Design Consultation", "status": "completed", "date": "2025-06-01", "description": "Client brief received — calming retreat with natural elements" },
+      { "stage": "Concept Development", "status": "completed", "date": "2025-06-15", "description": "Japandi concept with bamboo and linen textures presented" },
+      { "stage": "Design Approval", "status": "completed", "date": "2025-07-01", "description": "Design approved on first presentation — client thrilled" },
+      { "stage": "Material Procurement", "status": "completed", "date": "2025-07-20", "description": "Bamboo panels and clay plaster sourced from Japan" },
+      { "stage": "Demolition & Prep", "status": "completed", "date": "2025-08-05", "description": "Room cleared and prepped for new wall finishes" },
+      { "stage": "Construction", "status": "completed", "date": "2025-09-01", "description": "Clay feature wall completed. Platform bed base built." },
+      { "stage": "Furniture Installation", "status": "completed", "date": "2025-10-01", "description": "All furniture and soft furnishings installed" },
+      { "stage": "Final Handover", "status": "completed", "date": "2025-10-30", "description": "Project handed over — client delighted with the result" }
+    ],
+    "progressUpdates": [
+      { "date": "2025-06-01", "text": "Met with Kevin. He wants a calming bedroom retreat with Japanese influences." },
+      { "date": "2025-06-15", "text": "Presented Japandi concept — bamboo, linen, muted earth tones. Kevin loved it." },
+      { "date": "2025-07-01", "text": "Design approved! Starting material sourcing." },
+      { "date": "2025-07-20", "text": "Premium bamboo panels and organic cotton bedding ordered." },
+      { "date": "2025-08-05", "text": "Room cleared. Old carpet removed, subfloor leveled." },
+      { "date": "2025-08-20", "text": "Clay plaster feature wall completed — beautiful natural texture." },
+      { "date": "2025-09-01", "text": "Platform bed frame built with integrated storage." },
+      { "date": "2025-09-15", "text": "Bamboo panel accent wall installed behind bed." },
+      { "date": "2025-10-01", "text": "All furniture in place. Paper lantern pendants hung." },
+      { "date": "2025-10-15", "text": "Styling complete. Added ceramic vases and eucalyptus." },
+      { "date": "2025-10-30", "text": "Final handover — Kevin is thrilled. Project completed under budget!" }
+    ],
+    "budget": {
+      "total": 14000,
+      "breakdown": [
+        { "category": "Flooring", "estimated": 2500, "actual": 2200 },
+        { "category": "Wall Treatments", "estimated": 2500, "actual": 2600 },
+        { "category": "Furniture", "estimated": 5000, "actual": 4800 },
+        { "category": "Lighting", "estimated": 1500, "actual": 1300 },
+        { "category": "Soft Furnishings", "estimated": 1500, "actual": 1400 },
+        { "category": "Labour & Installation", "estimated": 1500, "actual": 1500 }
+      ]
+    }
+  }
+]
