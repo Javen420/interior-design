@@ -1,99 +1,404 @@
-'use client';
-import { motion } from 'framer-motion';
-import { Play, Layers, Sun, Maximize2 } from 'lucide-react';
-import Link from 'next/link';
+"use client";
+
+import React, { useState, useRef } from "react";
+import { ARViewerContainer } from "@/components/ARViewer";
+import { GeneratedDesign } from "@/store/designStore";
+
+// Fixed minimalist design for AR demo
+const MINIMALIST_DEMO_DESIGN: GeneratedDesign = {
+  styleApplied: "Minimalist",
+  totalCost: 8500,
+  averageCost: 425,
+  room: {
+    width: 5,
+    length: 4.5,
+    walls: [
+      { x1: 0, y1: 0, x2: 5, y2: 0 },
+      { x1: 5, y1: 0, x2: 5, y2: 4.5 },
+      { x1: 5, y1: 4.5, x2: 0, y2: 4.5 },
+      { x1: 0, y1: 4.5, x2: 0, y2: 0 },
+    ],
+    doors: [{ x: 2.5, y: 0, width: 1, side: "top" }],
+    windows: [{ x: 0.5, y: 0, width: 1.5, side: "top" }],
+  },
+  items: [
+    {
+      id: "sofa-1",
+      name: "Modern L-Shape Sofa",
+      catalogId: "sofa-1",
+      category: "Seating",
+      x: 0.3,
+      y: 0.8,
+      width: 2.5,
+      depth: 1.2,
+      color: "#e8dcc8",
+      price: 1200,
+      rotation: 0,
+    },
+    {
+      id: "armchair-1",
+      name: "Scandinavian Armchair",
+      catalogId: "armchair-1",
+      category: "Seating",
+      x: 3.2,
+      y: 1.5,
+      width: 1.3,
+      depth: 0.9,
+      color: "#c9a87c",
+      price: 520,
+      rotation: 0,
+    },
+    {
+      id: "table-1",
+      name: "Walnut Coffee Table",
+      catalogId: "table-1",
+      category: "Tables",
+      x: 1.2,
+      y: 2.2,
+      width: 1.8,
+      depth: 0.9,
+      color: "#6b4423",
+      price: 480,
+      rotation: 0,
+    },
+    {
+      id: "side-table-1",
+      name: "Natural Oak Side Table",
+      catalogId: "side-table-1",
+      category: "Tables",
+      x: 3.5,
+      y: 3.0,
+      width: 0.8,
+      depth: 0.6,
+      color: "#a0795f",
+      price: 240,
+      rotation: 0,
+    },
+    {
+      id: "shelves-1",
+      name: "Floating Shelving Unit",
+      catalogId: "shelves-1",
+      category: "Storage",
+      x: 4.0,
+      y: 0.4,
+      width: 0.9,
+      depth: 0.35,
+      color: "#f8f6f2",
+      price: 580,
+      rotation: 0,
+    },
+    {
+      id: "bookshelf-1",
+      name: "Minimalist Bookshelf",
+      catalogId: "bookshelf-1",
+      category: "Storage",
+      x: 0.2,
+      y: 3.0,
+      width: 1.2,
+      depth: 0.35,
+      color: "#d0c9be",
+      price: 450,
+      rotation: 0,
+    },
+    {
+      id: "pendant-1",
+      name: "Brass Pendant Light",
+      catalogId: "pendant-1",
+      category: "Lighting",
+      x: 1.5,
+      y: 2.5,
+      width: 0.25,
+      depth: 0.25,
+      color: "#d4a574",
+      price: 280,
+      rotation: 0,
+    },
+    {
+      id: "floor-lamp-1",
+      name: "Arc Floor Lamp",
+      catalogId: "floor-lamp-1",
+      category: "Lighting",
+      x: 3.8,
+      y: 2.0,
+      width: 0.2,
+      depth: 0.2,
+      color: "#333333",
+      price: 320,
+      rotation: 0,
+    },
+    {
+      id: "rug-1",
+      name: "Jute & Wool Blend Rug",
+      catalogId: "rug-1",
+      category: "Decor",
+      x: 0.8,
+      y: 1.5,
+      width: 2.8,
+      depth: 2.2,
+      color: "#d9cfc3",
+      price: 680,
+      rotation: 0,
+    },
+    {
+      id: "plant-1",
+      name: "Tall Snake Plant",
+      catalogId: "plant-1",
+      category: "Decor",
+      x: 0.1,
+      y: 0.2,
+      width: 0.4,
+      depth: 0.4,
+      color: "#1a3a1a",
+      price: 95,
+      rotation: 0,
+    },
+    {
+      id: "plant-2",
+      name: "Fiddle Leaf Fig",
+      catalogId: "plant-2",
+      category: "Decor",
+      x: 4.4,
+      y: 3.8,
+      width: 0.5,
+      depth: 0.5,
+      color: "#2d5016",
+      price: 120,
+      rotation: 0,
+    },
+    {
+      id: "plant-3",
+      name: "Pothos Plant Pot",
+      catalogId: "plant-3",
+      category: "Decor",
+      x: 4.0,
+      y: 3.5,
+      width: 0.35,
+      depth: 0.35,
+      color: "#3a6b3a",
+      price: 85,
+      rotation: 0,
+    },
+    {
+      id: "wall-art-1",
+      name: "Abstract Wall Art",
+      catalogId: "wall-art-1",
+      category: "Decor",
+      x: 0.3,
+      y: 0.5,
+      width: 1.0,
+      depth: 0.05,
+      color: "#c9a87c",
+      price: 240,
+      rotation: 0,
+    },
+    {
+      id: "cushion-1",
+      name: "Linen Throw Cushions",
+      catalogId: "cushion-1",
+      category: "Decor",
+      x: 1.8,
+      y: 0.9,
+      width: 0.5,
+      depth: 0.5,
+      color: "#a88c5d",
+      price: 160,
+      rotation: 0,
+    },
+    {
+      id: "side-decor-1",
+      name: "Ceramic Vase Trio",
+      catalogId: "side-decor-1",
+      category: "Decor",
+      x: 4.1,
+      y: 0.7,
+      width: 0.6,
+      depth: 0.2,
+      color: "#e8dcc8",
+      price: 185,
+      rotation: 0,
+    },
+  ],
+  colorPalette: ["#e8dcc8", "#d9cfc3", "#c9a87c", "#6b4423", "#1a3a1a"],
+};
 
 export default function ARDemoPage() {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleFullscreen = async () => {
+    if (!containerRef.current) return;
+
+    try {
+      if (!document.fullscreenElement) {
+        await containerRef.current.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    } catch (err) {
+      console.error("Fullscreen error:", err);
+    }
+  };
+
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
-      {/* Hero */}
-      <div className="container-main" style={{ textAlign: 'center', paddingTop: 64, paddingBottom: 40 }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="chip chip-accent" style={{ margin: '0 auto 20px', display: 'inline-flex' }}>INNOVATION IN DESIGN</div>
-          <h1 style={{ fontSize: 48, fontWeight: 800, lineHeight: 1.15, marginBottom: 16 }}>
-            Experience Your Design in<br />Augmented Reality
+    <main className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <section className="py-12 px-4 sm:py-16 md:py-20 bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+            Visualize Your Design in 3D & AR
           </h1>
-          <p style={{ fontSize: 16, color: 'var(--color-text-secondary)', lineHeight: 1.7, maxWidth: 600, margin: '0 auto' }}>
-            Step inside your future home before a single brick is laid. Our advanced AR/VR technology allows you to visualize materials, furniture, and lighting in real-time within your actual space.
+          <p className="text-base sm:text-lg text-gray-300 max-w-2xl">
+            See how your design looks in three dimensions. If your device
+            supports it, view your room in augmented reality to experience it in
+            your actual space.
           </p>
-        </motion.div>
-      </div>
-
-      {/* Video Player */}
-      <div className="container-main">
-        <motion.div style={{
-          background: 'linear-gradient(135deg, #e8e0d4, #d4ccc0)',
-          borderRadius: 20, overflow: 'hidden', position: 'relative',
-          aspectRatio: '16/9', maxWidth: 900, margin: '0 auto',
-          cursor: 'pointer',
-        }} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          {/* Simulated AR view */}
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ position: 'absolute', top: 16, left: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#f87171' }} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#1a1a2e', letterSpacing: '0.05em', background: 'rgba(255,255,255,0.7)', padding: '4px 10px', borderRadius: 6 }}>LIVE AR SCANNING</span>
-            </div>
-            <motion.div style={{
-              width: 80, height: 80, borderRadius: '50%',
-              background: 'rgba(196,162,101,0.3)', backdropFilter: 'blur(8px)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }} whileHover={{ scale: 1.1 }} transition={{ type: 'spring' }}>
-              <Play size={32} style={{ color: 'var(--color-accent)', marginLeft: 4 }} />
-            </motion.div>
-          </div>
-          {/* Progress bar */}
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: 16 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                <span style={{ fontSize: 12, color: '#1a1a2e', opacity: 0.6 }}>🔊</span>
-                <span style={{ fontSize: 12, color: '#1a1a2e', opacity: 0.6 }}>⚙</span>
-              </div>
-              <span style={{ fontSize: 11, color: '#1a1a2e', opacity: 0.6 }}>02:45 / 08:20</span>
-            </div>
-            <div style={{ height: 3, background: 'rgba(0,0,0,0.15)', borderRadius: 2 }}>
-              <div style={{ width: '33%', height: '100%', background: 'var(--color-accent)', borderRadius: 2 }} />
-            </div>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* CTA */}
-      <div style={{ textAlign: 'center', padding: '40px 0' }}>
-        <motion.button className="btn-primary" style={{ fontSize: 16, padding: '16px 40px' }}
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          📅 Book a Live AR Session
-        </motion.button>
-      </div>
-
-      {/* Features */}
-      <div className="container-main" style={{ paddingBottom: 80 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, maxWidth: 800, margin: '0 auto' }}>
-          {[
-            { icon: Layers, title: 'Material Swap', desc: 'Switch between marble, wood, or tile instantly to find your perfect match.' },
-            { icon: Sun, title: 'Shadow Simulation', desc: 'See how natural light interacts with your space throughout the entire day.' },
-            { icon: Maximize2, title: 'Real-Scale View', desc: 'Accurate 1:1 scale visualization ensuring furniture fits perfectly in your room.' },
-          ].map((f, i) => (
-            <motion.div key={f.title} className="card" style={{ textAlign: 'center', padding: 28 }}
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 + i * 0.1 }}>
-              <div style={{ width: 52, height: 52, borderRadius: 14, background: 'var(--color-accent-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-                <f.icon size={24} style={{ color: 'var(--color-accent)' }} />
-              </div>
-              <h3 style={{ fontWeight: 700, marginBottom: 8 }}>{f.title}</h3>
-              <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>{f.desc}</p>
-            </motion.div>
-          ))}
         </div>
-      </div>
+      </section>
 
-      {/* Footer */}
-      <div style={{ borderTop: '1px solid var(--color-border)', padding: '20px 0' }}>
-        <div className="container-main" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, color: 'var(--color-text-secondary)' }}>
-          <span>© 2024 Kairos Interior Studio. All rights reserved.</span>
-          <div style={{ display: 'flex', gap: 20 }}>
-            <span>Instagram</span><span>LinkedIn</span><span>Pinterest</span>
+      {/* Main Content */}
+      <section className="py-8 px-4 sm:py-12 md:py-16">
+        <div className="max-w-6xl mx-auto">
+          <>
+            {/* Design Visualization Area */}
+            <div
+              ref={containerRef}
+              className={`rounded-lg overflow-hidden shadow-lg ${
+                isFullscreen ? "fixed inset-0 rounded-none z-50" : ""
+              }`}
+              style={{ height: isFullscreen ? "100vh" : "600px" }}
+            >
+              <ARViewerContainer
+                design={MINIMALIST_DEMO_DESIGN}
+                onFullscreenRequest={handleFullscreen}
+              />
+            </div>
+
+            {/* Design Info Card */}
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                <h3 className="font-semibold text-lg text-gray-900 mb-4">
+                  Minimalist Design (Demo)
+                </h3>
+                <dl className="space-y-3 text-sm">
+                  <div>
+                    <dt className="text-gray-600">Style Applied</dt>
+                    <dd className="font-semibold text-gray-900">
+                      {MINIMALIST_DEMO_DESIGN.styleApplied}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-gray-600">Total Cost</dt>
+                    <dd className="font-semibold text-gray-900">
+                      ${MINIMALIST_DEMO_DESIGN.totalCost.toLocaleString()}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-gray-600">Average Item Cost</dt>
+                    <dd className="font-semibold text-gray-900">
+                      ${MINIMALIST_DEMO_DESIGN.averageCost.toLocaleString()}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-gray-600">Room Dimensions</dt>
+                    <dd className="font-semibold text-gray-900">
+                      {MINIMALIST_DEMO_DESIGN.room.width}m ×{" "}
+                      {MINIMALIST_DEMO_DESIGN.room.length}m
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-gray-600">Furniture Items</dt>
+                    <dd className="font-semibold text-gray-900">
+                      {MINIMALIST_DEMO_DESIGN.items.length}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+
+              <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
+                <h3 className="font-semibold text-lg text-blue-900 mb-4">
+                  Color Palette
+                </h3>
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  {MINIMALIST_DEMO_DESIGN.colorPalette
+                    .slice(0, 4)
+                    .map((color, idx) => (
+                      <div key={idx} className="flex items-center gap-2">
+                        <div
+                          className="w-8 h-8 rounded border border-gray-300"
+                          style={{ backgroundColor: color }}
+                        />
+                        <span className="text-sm font-mono text-gray-700">
+                          {color}
+                        </span>
+                      </div>
+                    ))}
+                </div>
+
+                <h4 className="font-semibold text-blue-900 text-sm mb-3">
+                  3D Controls
+                </h4>
+                <ul className="space-y-2 text-sm text-blue-800">
+                  <li>
+                    🖱️ <strong>Drag</strong> to rotate the view
+                  </li>
+                  <li>
+                    📏 <strong>Scroll/Pinch</strong> to zoom in/out
+                  </li>
+                  <li>
+                    🖥️ <strong>Fullscreen</strong> button for immersive view
+                  </li>
+                  <li>
+                    📱 <strong>AR View</strong> (if supported) for real-world
+                    preview
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <a
+                href="/design/wizard"
+                className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Create Your Design
+              </a>
+            </div>
+          </>
+        </div>
+      </section>
+
+      {/* AR Support Info */}
+      <section className="py-8 px-4 bg-gray-50 border-t border-gray-200">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
+            AR Compatibility
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h3 className="font-semibold text-green-900 mb-2">
+                ✅ AR Supported
+              </h3>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• iOS 17+ (iPhone 12 and newer)</li>
+                <li>• Android with ARCore (Latest Chrome)</li>
+                <li>• Samsung DeX devices</li>
+              </ul>
+            </div>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <h3 className="font-semibold text-yellow-900 mb-2">
+                💡 3D Fallback
+              </h3>
+              <p className="text-sm text-yellow-800">
+                Don't have AR? Use the interactive 3D viewer to explore your
+                design from all angles.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
