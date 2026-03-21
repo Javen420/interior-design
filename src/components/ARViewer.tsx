@@ -1,217 +1,224 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Environment } from "@react-three/drei";
+import React, { Suspense, useEffect } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { OrbitControls, Environment, SoftShadows, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
-import { useDesignStore, GeneratedDesign } from "@/store/designStore";
-import { convert2DTo3D, createFurnitureBox } from "@/utils/roomGeometry";
+import { useDesignStore, type GeneratedDesign, type RoomData } from "@/store/designStore";
+import { FurnitureModel } from "@/components/FurnitureModel";
+import { getAllRegisteredPaths } from "@/lib/modelRegistry";
 
-interface TouchState {
-  startX: number;
-  startY: number;
-  startRotation: { x: number; y: number };
-}
+// Pre-fetch any registered models in the background so they are ready
+// before the user switches to the 3D tab. Has no effect when the list is empty.
+getAllRegisteredPaths().forEach((path) => useGLTF.preload(path));
 
-function RoomScene({ design }: { design: GeneratedDesign | null }) {
-  const groupRef = useRef<THREE.Group>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [touchState, setTouchState] = useState<TouchState | null>(null);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+// ── Constants ───────────────────────────────────────────────────────────────
 
-  useEffect(() => {
-    if (!groupRef.current || !design) return;
+const WALL_HEIGHT = 2.8;
+const WALL_MATERIAL = new THREE.MeshStandardMaterial({
+  color: "#F0EBE3",
+  roughness: 0.88,
+  metalness: 0,
+});
+const PARTITION_MATERIAL = new THREE.MeshStandardMaterial({
+  color: "#F5F0EA",
+  roughness: 0.88,
+  metalness: 0,
+});
 
-    groupRef.current.clear();
+// ── Room shell helpers ──────────────────────────────────────────────────────
 
-    const roomData = design.room;
-    const height = 2.8;
+/** Extrudes a single 2D wall segment into a 3D box, centred in world space. */
+function WallSegment({
+  wall,
+  room,
+}: {
+  wall: { x1: number; y1: number; x2: number; y2: number; type?: string };
+  room: RoomData;
+}) {
+  const dx = wall.x2 - wall.x1;
+  const dy = wall.y2 - wall.y1;
+  const segLen = Math.sqrt(dx * dx + dy * dy);
+  if (segLen < 0.01) return null;
 
-    // Floor
-    const floorGeometry = new THREE.PlaneGeometry(
-      roomData.width,
-      roomData.length,
-    );
-    const floorMaterial = new THREE.MeshStandardMaterial({
-      color: 0xf5f5f5,
-      roughness: 0.3,
-      metalness: 0,
-    });
-    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    floor.receiveShadow = true;
-    groupRef.current.add(floor);
+  const isInternal = wall.type === "internal";
+  const thickness = isInternal ? 0.09 : 0.15;
+  const height = isInternal ? WALL_HEIGHT : WALL_HEIGHT;
 
-    // Ceiling
-    const ceilingGeometry = new THREE.PlaneGeometry(
-      roomData.width,
-      roomData.length,
-    );
-    const ceilingMaterial = new THREE.MeshStandardMaterial({
-      color: 0xfafafa,
-      roughness: 0.5,
-      metalness: 0,
-    });
-    const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
-    ceiling.position.y = height;
-    ceiling.rotation.x = Math.PI / 2;
-    groupRef.current.add(ceiling);
+  // Midpoint in world space (2D origin top-left → world origin at room centre)
+  const mx = (wall.x1 + wall.x2) / 2 - room.width / 2;
+  const mz = (wall.y1 + wall.y2) / 2 - room.length / 2;
 
-    // Walls
-    const wallMaterial = new THREE.MeshStandardMaterial({
-      color: 0xf8f6f2,
-      roughness: 0.4,
-      metalness: 0,
-    });
-
-    // Front wall
-    const frontWallGeometry = new THREE.PlaneGeometry(roomData.width, height);
-    const frontWall = new THREE.Mesh(frontWallGeometry, wallMaterial);
-    frontWall.position.z = -roomData.length / 2;
-    frontWall.position.y = height / 2;
-    frontWall.castShadow = true;
-    frontWall.receiveShadow = true;
-    groupRef.current.add(frontWall);
-
-    // Back wall
-    const backWall = new THREE.Mesh(frontWallGeometry, wallMaterial);
-    backWall.position.z = roomData.length / 2;
-    backWall.rotation.y = Math.PI;
-    backWall.position.y = height / 2;
-    backWall.castShadow = true;
-    backWall.receiveShadow = true;
-    groupRef.current.add(backWall);
-
-    // Left wall
-    const sideWallGeometry = new THREE.PlaneGeometry(roomData.length, height);
-    const leftWall = new THREE.Mesh(sideWallGeometry, wallMaterial);
-    leftWall.position.x = -roomData.width / 2;
-    leftWall.rotation.y = Math.PI / 2;
-    leftWall.position.y = height / 2;
-    leftWall.castShadow = true;
-    leftWall.receiveShadow = true;
-    groupRef.current.add(leftWall);
-
-    // Right wall
-    const rightWall = new THREE.Mesh(sideWallGeometry, wallMaterial);
-    rightWall.position.x = roomData.width / 2;
-    rightWall.rotation.y = -Math.PI / 2;
-    rightWall.position.y = height / 2;
-    rightWall.castShadow = true;
-    rightWall.receiveShadow = true;
-    groupRef.current.add(rightWall);
-
-    // Grid
-    const gridHelper = new THREE.GridHelper(
-      Math.max(roomData.width, roomData.length),
-      8,
-      0xcccccc,
-      0xeeeeee,
-    );
-    gridHelper.position.y = 0.01;
-    groupRef.current.add(gridHelper);
-
-    // Furniture from design
-    design.items.forEach((item) => {
-      try {
-        const furnitureBox = createFurnitureBox(item, roomData);
-        groupRef.current!.add(furnitureBox);
-      } catch (err) {
-        console.error("Error creating furniture:", item, err);
-      }
-    });
-  }, [design]);
-
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.x = rotation.x;
-      groupRef.current.rotation.y = rotation.y;
-    }
-  });
-
-  const handlePointerDown = (e: PointerEvent) => {
-    setIsDragging(true);
-    setTouchState({
-      startX: e.clientX,
-      startY: e.clientY,
-      startRotation: { ...rotation },
-    });
-  };
-
-  const handlePointerMove = (e: PointerEvent) => {
-    if (!isDragging || !touchState) return;
-
-    const deltaX = e.clientX - touchState.startX;
-    const deltaY = e.clientY - touchState.startY;
-
-    setRotation({
-      x: touchState.startRotation.x + deltaY * 0.01,
-      y: touchState.startRotation.y + deltaX * 0.01,
-    });
-  };
-
-  const handlePointerUp = () => {
-    setIsDragging(false);
-    setTouchState(null);
-  };
-
-  useEffect(() => {
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerup", handlePointerUp);
-    window.addEventListener("pointerdown", handlePointerDown);
-
-    return () => {
-      window.removeEventListener("pointermove", handlePointerMove);
-      window.removeEventListener("pointerup", handlePointerUp);
-      window.removeEventListener("pointerdown", handlePointerDown);
-    };
-  }, [isDragging, touchState, rotation]);
+  // Rotation: BoxGeometry length axis is world-X by default.
+  // We rotate around Y so the box aligns with the wall direction.
+  // 2D angle: atan2(dy, dx) in screen coords (x→right, y→down)
+  // Three.js: positive Y rotation turns X toward -Z.
+  const rotY = -Math.atan2(dy, dx);
 
   return (
+    <mesh
+      position={[mx, height / 2, mz]}
+      rotation={[0, rotY, 0]}
+      castShadow
+      receiveShadow
+      material={isInternal ? PARTITION_MATERIAL : WALL_MATERIAL}
+    >
+      <boxGeometry args={[segLen, height, thickness]} />
+    </mesh>
+  );
+}
+
+/** Floor plane — single material, or zone-aware if spaces are present. */
+function Floor({ room }: { room: RoomData }) {
+  // Full floor background
+  return (
+    <group>
+      {/* base floor */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.001, 0]} receiveShadow>
+        <planeGeometry args={[room.width, room.length]} />
+        <meshStandardMaterial color="#E8E0D4" roughness={0.9} metalness={0} />
+      </mesh>
+
+      {/* per-zone material overlay */}
+      {room.spaces?.map((zone) => {
+        const zx = zone.x + zone.width / 2 - room.width / 2;
+        const zz = zone.y + zone.length / 2 - room.length / 2;
+        return (
+          <mesh
+            key={zone.id}
+            rotation={[-Math.PI / 2, 0, 0]}
+            position={[zx, 0.001, zz]}
+            receiveShadow
+          >
+            <planeGeometry args={[zone.width, zone.length]} />
+            <meshStandardMaterial
+              color={zone.floor === "tile" ? "#D8D0C8" : "#C8B898"}
+              roughness={zone.floor === "tile" ? 0.4 : 0.95}
+              metalness={zone.floor === "tile" ? 0.05 : 0}
+            />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
+/** Ceiling plane — slightly warm off-white. */
+function Ceiling({ room }: { room: RoomData }) {
+  return (
+    <mesh
+      rotation={[Math.PI / 2, 0, 0]}
+      position={[0, WALL_HEIGHT, 0]}
+      receiveShadow
+    >
+      <planeGeometry args={[room.width + 0.3, room.length + 0.3]} />
+      <meshStandardMaterial color="#FAFAF8" roughness={0.9} metalness={0} side={THREE.BackSide} />
+    </mesh>
+  );
+}
+
+/** Architectural lighting rig. */
+function Lighting() {
+  return (
     <>
-      <group ref={groupRef} />
-      <ambientLight intensity={0.6} />
+      {/* Soft ambient — prevents pitch-black shadows */}
+      <ambientLight intensity={0.35} color="#FFF8F0" />
+
+      {/* Key light — main daylight from upper-front-right */}
       <directionalLight
-        position={[5, 8, 5]}
-        intensity={0.8}
+        position={[6, 9, 5]}
+        intensity={1.4}
+        color="#FFF8F2"
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
-        shadow-camera-far={50}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
+        shadow-camera-near={0.5}
+        shadow-camera-far={40}
+        shadow-camera-left={-12}
+        shadow-camera-right={12}
+        shadow-camera-top={12}
+        shadow-camera-bottom={-12}
+        shadow-bias={-0.0005}
       />
-      <pointLight position={[-5, 5, -5]} intensity={0.3} />
-      <Environment preset="apartment" />
+
+      {/* Fill light — from opposite side, warm bounce */}
+      <directionalLight position={[-4, 5, -4]} intensity={0.4} color="#F0E8D8" />
+
+      {/* Warm low fill — simulates floor bounce */}
+      <pointLight position={[0, 0.5, 0]} intensity={0.15} color="#F5E8D0" />
     </>
   );
 }
 
-function SceneControls() {
+/** Camera setup — isometric corner view looking into the apartment. */
+function CameraSetup({ room }: { room: RoomData }) {
   const { camera } = useThree();
 
   useEffect(() => {
-    if (camera) {
-      camera.position.set(5, 3.5, 5);
-      camera.lookAt(0, 1, 0);
-    }
-  }, [camera]);
+    // Place the camera above the front-right corner of the room.
+    // The 3D world is centred at the room origin, so no half-width offset needed.
+    const dist = Math.max(room.width, room.length) * 0.85;
+    camera.position.set(dist, dist * 0.75, dist);
+    camera.lookAt(0, 0.8, 0);
+  }, [camera, room.width, room.length]);
 
-  return <OrbitControls />;
+  return (
+    <OrbitControls
+      target={[0, 0.8, 0]}
+      maxPolarAngle={Math.PI / 2 - 0.02}
+      minDistance={2}
+      maxDistance={Math.max(room.width, room.length) * 3}
+      enableDamping
+      dampingFactor={0.08}
+    />
+  );
 }
 
-function DesignViewer3D({ design }: { design: GeneratedDesign | null }) {
+// ── Scene root ──────────────────────────────────────────────────────────────
+
+function RoomScene({ design }: { design: GeneratedDesign }) {
+  const { room } = design;
+
+  return (
+    <>
+      <Lighting />
+      <SoftShadows size={20} samples={16} />
+      <Environment preset="apartment" />
+      <Floor room={room} />
+
+      {/* Walls derived from 2D room.walls (outer + internal partitions) */}
+      {room.walls.map((wall, i) => (
+        <WallSegment key={`wall-${i}`} wall={wall} room={room} />
+      ))}
+
+      {/* Furniture — each item tries GLB then falls back to shaped geometry */}
+      <Suspense fallback={null}>
+        {design.items.map((item) => (
+          <FurnitureModel key={item.id} item={item} room={room} />
+        ))}
+      </Suspense>
+
+      <CameraSetup room={room} />
+    </>
+  );
+}
+
+function EmptyState() {
+  return (
+    <mesh position={[0, 0, 0]}>
+      <boxGeometry args={[0.001, 0.001, 0.001]} />
+      <meshBasicMaterial transparent opacity={0} />
+    </mesh>
+  );
+}
+
+// ── DesignViewer3D ──────────────────────────────────────────────────────────
+
+export function DesignViewer3D({ design }: { design: GeneratedDesign | null }) {
   if (!design) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100 text-gray-600 rounded-lg">
-        <div className="text-center">
-          <p className="text-lg font-semibold mb-2">No design generated yet</p>
-          <p className="text-sm">
-            Complete the design wizard to visualize your room
-          </p>
-        </div>
+      <div className="w-full h-full flex items-center justify-center bg-neutral-50 rounded-lg text-neutral-500 text-sm">
+        Complete the design wizard to see your 3D room
       </div>
     );
   }
@@ -219,18 +226,17 @@ function DesignViewer3D({ design }: { design: GeneratedDesign | null }) {
   return (
     <Canvas
       shadows
-      gl={{
-        antialias: true,
-        alpha: true,
-      }}
-      camera={{ position: [5, 3.5, 5], fov: 50, near: 0.1, far: 1000 }}
+      gl={{ antialias: true, alpha: false, toneMapping: THREE.ACESFilmicToneMapping }}
+      camera={{ fov: 48, near: 0.1, far: 200 }}
       className="w-full h-full"
+      style={{ background: "#F0EBE3" }}
     >
       <RoomScene design={design} />
-      <SceneControls />
     </Canvas>
   );
 }
+
+// ── ARViewerContainer (existing public API — kept for sidebar / AR panel) ───
 
 interface ARViewerContainerProps {
   design?: GeneratedDesign;
@@ -242,113 +248,32 @@ export function ARViewerContainer({
   onFullscreenRequest,
 }: ARViewerContainerProps) {
   const { generatedDesign } = useDesignStore();
-  const selectedDesign = design || generatedDesign;
-  const [arSupported, setArSupported] = useState(false);
-  const [arActive, setArActive] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const checkWebXR = async () => {
-      try {
-        const supported =
-          navigator.xr &&
-          (await navigator.xr.isSessionSupported("immersive-ar"));
-        setArSupported(!!supported);
-      } catch (err) {
-        console.log("WebXR not supported");
-        setArSupported(false);
-      }
-      setLoading(false);
-    };
-
-    checkWebXR();
-  }, []);
-
-  const handleARClick = async () => {
-    if (!navigator.xr || !selectedDesign) return;
-
-    try {
-      const session = await navigator.xr.requestSession("immersive-ar", {
-        requiredFeatures: ["hit-test"],
-        optionalFeatures: ["dom-overlay", "dom-overlay-for-handheld-ar"],
-      } as any);
-
-      setArActive(true);
-      session.end().then(() => setArActive(false));
-    } catch (err) {
-      console.error("AR session request failed:", err);
-    }
-  };
+  const selectedDesign = design ?? generatedDesign;
 
   return (
-    <div className="relative w-full h-full bg-linear-to-br from-gray-50 to-gray-100 rounded-lg overflow-hidden border border-gray-200">
-      <DesignViewer3D design={selectedDesign} />
+    <div className="relative w-full h-full rounded-lg overflow-hidden">
+      <DesignViewer3D design={selectedDesign ?? null} />
 
+      {/* Overlay controls */}
       <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
-        <button
-          onClick={onFullscreenRequest}
-          className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-lg shadow-md transition-all duration-200 text-sm font-medium flex items-center gap-2 backdrop-blur-sm"
-          title="Fullscreen view"
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M10 6H6v4m12-4h4v4M6 18h4v-4m12 4h-4v-4"
-            />
-          </svg>
-        </button>
-
-        {arSupported && !loading && (
+        {onFullscreenRequest && (
           <button
-            onClick={handleARClick}
-            disabled={!selectedDesign}
-            className={`p-2 rounded-lg shadow-md transition-all duration-200 text-sm font-medium flex items-center gap-2 backdrop-blur-sm ${
-              arActive
-                ? "bg-red-600 text-white hover:bg-red-700"
-                : selectedDesign
-                  ? "bg-white/90 hover:bg-white text-gray-800"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-            }`}
-            title="Start AR view"
+            onClick={onFullscreenRequest}
+            className="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-lg shadow-md transition-all text-sm font-medium flex items-center gap-2 backdrop-blur-sm"
+            title="Fullscreen view"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M10 6H6v4m12-4h4v4M6 18h4v-4m12 4h-4v-4" />
             </svg>
-            {arActive ? "Exit AR" : "AR View"}
           </button>
         )}
       </div>
 
-      <div className="absolute bottom-4 left-4 right-4 bg-gray-900/80 text-white text-xs p-3 rounded-lg backdrop-blur-sm show-mobile">
-        <p className="font-semibold mb-1">💡 Tip:</p>
-        <p>Drag to rotate • Pinch to zoom</p>
-        {arSupported && (
-          <p className="mt-1">📱 Tap AR to view in augmented reality</p>
-        )}
+      {/* Usage hint */}
+      <div className="absolute bottom-4 left-4 bg-black/60 text-white text-xs px-3 py-2 rounded-lg backdrop-blur-sm pointer-events-none">
+        Drag to orbit · Scroll to zoom · Right-click to pan
       </div>
-
-      {!loading && !arSupported && (
-        <div className="absolute top-4 left-4 bg-yellow-100 border border-yellow-300 text-yellow-800 px-3 py-2 rounded-lg text-xs show-mobile">
-          📱 AR not available on this device
-        </div>
-      )}
     </div>
   );
 }

@@ -24,14 +24,35 @@ export interface FurnitureItem {
   rotation: number;
   color: string;
   id: string; // unique placement id
+  /** When set, item was placed in this zone of a multi-room layout */
+  spaceId?: string;
+}
+
+export interface FloorSpace {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+  width: number;
+  length: number;
+  floor: "wood" | "tile";
 }
 
 export interface RoomData {
   width: number;
   length: number;
   walls: { x1: number; y1: number; x2: number; y2: number }[];
-  doors: { x: number; y: number; width: number; side: string }[];
+  doors: {
+    x: number;
+    y: number;
+    width: number;
+    side?: string;
+    orientation?: "horizontal" | "vertical";
+  }[];
   windows: { x: number; y: number; width: number; side: string }[];
+  /** Multi-room apartment metadata */
+  layoutId?: string;
+  spaces?: FloorSpace[];
 }
 
 export interface GeneratedDesign {

@@ -28,6 +28,11 @@ const flatTypes = [
   { id: "resale-hdb", label: "Resale HDB", desc: "Standard Layout" },
 ];
 const roomTypes = [
+  {
+    id: "full-apartment",
+    label: "Full 3BR apartment",
+    hint: "3-room BTO layout with living, kitchen, bath & 3 bedrooms",
+  },
   { id: "living-room", label: "Living Room" },
   { id: "bedroom", label: "Master Bedroom" },
   { id: "kitchen", label: "Kitchen" },
@@ -361,6 +366,8 @@ export default function WizardPage() {
                 {roomTypes.map((rt) => (
                   <button
                     key={rt.id}
+                    type="button"
+                    title={"hint" in rt && rt.hint ? rt.hint : rt.label}
                     onClick={() =>
                       updatePreferences({
                         roomType: preferences.roomType === rt.id ? "" : rt.id,

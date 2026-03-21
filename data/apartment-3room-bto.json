@@ -1,0 +1,114 @@
+{
+  "id": "3room-bto-grid-3br",
+  "name": "3-Room BTO — full apartment (3 bedrooms)",
+  "flatType": "3room-bto",
+  "roomType": "full-apartment",
+  "width": 9,
+  "length": 8,
+  "sqm": 72,
+  "averageCost": 45000,
+  "walls": [
+    { "x1": 0, "y1": 0, "x2": 9, "y2": 0 },
+    { "x1": 9, "y1": 0, "x2": 9, "y2": 8 },
+    { "x1": 9, "y1": 8, "x2": 0, "y2": 8 },
+    { "x1": 0, "y1": 8, "x2": 0, "y2": 0 },
+    { "x1": 3, "y1": 0, "x2": 3, "y2": 8 },
+    { "x1": 6, "y1": 0, "x2": 6, "y2": 8 },
+    { "x1": 0, "y1": 4, "x2": 9, "y2": 4 }
+  ],
+  "doors": [
+    {
+      "x": 4.5,
+      "y": 8,
+      "width": 0.95,
+      "side": "bottom",
+      "orientation": "horizontal"
+    },
+    {
+      "x": 3,
+      "y": 5.2,
+      "width": 0.85,
+      "orientation": "vertical"
+    },
+    {
+      "x": 6,
+      "y": 5.2,
+      "width": 0.85,
+      "orientation": "vertical"
+    },
+    {
+      "x": 1.5,
+      "y": 4,
+      "width": 0.85,
+      "side": "top",
+      "orientation": "horizontal"
+    },
+    {
+      "x": 7.5,
+      "y": 4,
+      "width": 0.85,
+      "side": "top",
+      "orientation": "horizontal"
+    }
+  ],
+  "windows": [
+    { "x": 4.5, "y": 0, "width": 2.2, "side": "top" },
+    { "x": 9, "y": 1.2, "width": 1.6, "side": "right" }
+  ],
+  "spaces": [
+    {
+      "id": "bed2",
+      "label": "Bedroom 2",
+      "x": 0,
+      "y": 0,
+      "width": 3,
+      "length": 4,
+      "floor": "wood"
+    },
+    {
+      "id": "living",
+      "label": "Living / Dining",
+      "x": 3,
+      "y": 0,
+      "width": 3,
+      "length": 4,
+      "floor": "wood"
+    },
+    {
+      "id": "bed3",
+      "label": "Bedroom 3",
+      "x": 6,
+      "y": 0,
+      "width": 3,
+      "length": 4,
+      "floor": "wood"
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen",
+      "x": 0,
+      "y": 4,
+      "width": 3,
+      "length": 4,
+      "floor": "tile"
+    },
+    {
+      "id": "bath",
+      "label": "Bathroom",
+      "x": 3,
+      "y": 4,
+      "width": 3,
+      "length": 4,
+      "floor": "tile"
+    },
+    {
+      "id": "master",
+      "label": "Master bedroom",
+      "x": 6,
+      "y": 4,
+      "width": 3,
+      "length": 4,
+      "floor": "wood"
+    }
+  ]
+}

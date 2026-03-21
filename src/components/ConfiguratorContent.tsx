@@ -1,9 +1,17 @@
 "use client";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Stage, Layer, Rect, Text, Group, Line, Circle } from "react-konva";
+import { Stage, Layer, Rect, Text, Group, Line, Arc } from "react-konva";
+import {
+  FP,
+  SCALE as FP_SCALE,
+  FurnitureSymbol,
+  ArchDoor,
+  ArchWindow,
+} from "@/lib/floorPlanSymbols";
 import { useDesignStore, FurnitureItem } from "@/store/designStore";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { DesignViewer3D } from "@/components/ARViewer";
 import {
   Sparkles,
   Undo2,
@@ -25,7 +33,7 @@ import {
   Grid,
 } from "lucide-react";
 
-const SCALE = 80;
+const SCALE = FP_SCALE;
 const GRID = 0.25;
 
 export default function ConfiguratorContent() {
@@ -88,6 +96,9 @@ export default function ConfiguratorContent() {
 
   const room = generatedDesign?.room;
   const totalCost = canvasItems.reduce((s, i) => s + i.price, 0);
+  const isRug = (item: FurnitureItem) =>
+    item.name.toLowerCase().includes("rug") ||
+    item.name.toLowerCase().includes(" mat");
 
   useEffect(() => {
     fetch("/data/furniture-catalog.json")
@@ -97,15 +108,44 @@ export default function ConfiguratorContent() {
   }, []);
 
   useEffect(() => {
-    if (canvasItems.length > 0 && itemsVisible.size === 0) {
-      canvasItems.forEach((item, i) => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    // Items whose IDs are not yet in itemsVisible need to be revealed.
+    // We cannot read itemsVisible here (stale closure) but the functional
+    // updater below always receives the latest prev, so duplicates are
+    // handled safely without needing itemsVisible in scope.
+    //
+    // Stagger strategy:
+    //   • Initial design load (many new items at once) — stagger at 60 ms/item
+    //     so the reveal animation is visible.
+    //   • User adds a single item from the catalog — 0 ms delay so it appears
+    //     immediately.
+    //
+    // Cleanup: cancel any pending timers from a previous run before scheduling
+    // new ones. Without this, rapid canvasItems changes pile up overlapping
+    // timeout chains that flood setItemsVisible, causing Konva to skip
+    // re-drawing static elements (walls) while processing the opacity updates.
+    let staggerDelay = 0;
+
+    canvasItems.forEach((item, i) => {
+      timers.push(
         setTimeout(
-          () => setItemsVisible((prev) => new Set([...prev, item.id])),
-          i * 100,
-        );
-      });
-    }
-  }, [canvasItems, itemsVisible.size]);
+          () =>
+            setItemsVisible((prev) => {
+              if (prev.has(item.id)) return prev;
+              return new Set([...prev, item.id]);
+            }),
+          staggerDelay,
+        ),
+      );
+      // Apply stagger only for items beyond the third — a single new item
+      // from the catalog is always at the end and gets delay 0 because
+      // the loop's first items are already visible (functional updater no-ops).
+      staggerDelay = i < 2 ? 0 : staggerDelay + 60;
+    });
+
+    return () => timers.forEach(clearTimeout);
+  }, [canvasItems]);
 
   useEffect(() => {
     if (!selectedItemId) {
@@ -1008,89 +1048,9 @@ export default function ConfiguratorContent() {
                   </p>
                 </div>
               ) : (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "relative",
-                  }}
-                >
-                  <img
-                    src={`/images/styles/${(preferences.styles[0] || "Scandinavian").toLowerCase().replace(/\s+/g, "-")}.png`}
-                    alt="Realistic 3D Render"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 20,
-                      left: 20,
-                      background: "rgba(255,255,255,0.9)",
-                      backdropFilter: "blur(8px)",
-                      padding: "6px 12px",
-                      borderRadius: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      boxShadow: "var(--shadow-sm)",
-                    }}
-                  >
-                    <Sparkles
-                      size={14}
-                      style={{ color: "var(--color-accent)" }}
-                    />
-                    <span
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 700,
-                        color: "var(--color-text)",
-                        letterSpacing: "0.05em",
-                      }}
-                    >
-                      AI GENERATED RENDER
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 20,
-                      right: 20,
-                      background: "rgba(255,255,255,0.9)",
-                      backdropFilter: "blur(8px)",
-                      padding: "8px 16px",
-                      borderRadius: 12,
-                      boxShadow: "var(--shadow-lg)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 10,
-                        fontWeight: 700,
-                        letterSpacing: "0.05em",
-                        color: "var(--color-text-secondary)",
-                        marginBottom: 2,
-                      }}
-                    >
-                      APPLIED STYLE
-                    </div>
-                    <span
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 600,
-                        color: "var(--color-text)",
-                      }}
-                    >
-                      {preferences.styles[0] || "Scandinavian"}
-                    </span>
-                  </div>
-                </motion.div>
+                <div style={{ width: "100%", height: "100%" }}>
+                  <DesignViewer3D design={generatedDesign ?? null} />
+                </div>
               )}
             </div>
           ) : (
@@ -1111,52 +1071,112 @@ export default function ConfiguratorContent() {
                 }}
               >
                 <Layer>
+                  {/* ── Floor background ─────────────────────────────── */}
                   <Rect
                     x={0}
                     y={0}
                     width={canvasWidth}
                     height={canvasHeight}
-                    fill="#ffffff"
+                    fill={FP.FLOOR_BG}
                     cornerRadius={8}
                     shadowColor="rgba(0,0,0,0.06)"
                     shadowBlur={24}
                     shadowOffsetY={12}
                     stroke="rgba(0,0,0,0.04)"
                     strokeWidth={2}
+                    listening={false}
                   />
-                  {Array.from({ length: Math.ceil(room.width / GRID) + 1 }).map(
-                    (_, i) => (
-                      <Line
-                        key={`gv${i}`}
-                        points={[
-                          i * GRID * SCALE * zoom,
-                          0,
-                          i * GRID * SCALE * zoom,
-                          canvasHeight,
-                        ]}
-                        stroke="rgba(0,0,0,0.03)"
-                        strokeWidth={1}
-                      />
-                    ),
-                  )}
-                  {Array.from({
-                    length: Math.ceil(room.length / GRID) + 1,
-                  }).map((_, i) => (
-                    <Line
-                      key={`gh${i}`}
-                      points={[
-                        0,
-                        i * GRID * SCALE * zoom,
-                        canvasWidth,
-                        i * GRID * SCALE * zoom,
-                      ]}
-                      stroke="rgba(0,0,0,0.03)"
-                      strokeWidth={1}
-                    />
-                  ))}
+                  {/* ── Zone fills + floor texture ────────────────── */}
+                  {room.spaces?.map((zone) => {
+                    const zx = zone.x * SCALE * zoom;
+                    const zy = zone.y * SCALE * zoom;
+                    const zw = zone.width * SCALE * zoom;
+                    const zh = zone.length * SCALE * zoom;
+                    const isTile = zone.floor === "tile";
+                    return (
+                      <Group key={zone.id} listening={false}>
+                        <Rect
+                          x={zx}
+                          y={zy}
+                          width={zw}
+                          height={zh}
+                          fill={
+                            isTile
+                              ? "rgba(148,163,184,0.14)"
+                              : "rgba(180,140,100,0.12)"
+                          }
+                        />
+                        {/* Wood grain lines every 0.2 m */}
+                        {!isTile &&
+                          Array.from(
+                            { length: Math.ceil(zone.length / 0.2) + 1 },
+                            (_, i) => {
+                              const ly = zy + i * 0.2 * SCALE * zoom;
+                              if (ly > zy + zh) return null;
+                              return (
+                                <Line
+                                  key={`wg${i}`}
+                                  points={[zx, ly, zx + zw, ly]}
+                                  stroke="rgba(150,110,70,0.1)"
+                                  strokeWidth={0.5}
+                                />
+                              );
+                            },
+                          )}
+                        {/* Tile grid every 0.3 m */}
+                        {isTile &&
+                          Array.from(
+                            { length: Math.ceil(zone.length / 0.3) + 1 },
+                            (_, i) => {
+                              const ly = zy + i * 0.3 * SCALE * zoom;
+                              if (ly > zy + zh) return null;
+                              return (
+                                <Line
+                                  key={`th${i}`}
+                                  points={[zx, ly, zx + zw, ly]}
+                                  stroke="rgba(100,120,140,0.1)"
+                                  strokeWidth={0.5}
+                                />
+                              );
+                            },
+                          )}
+                        {isTile &&
+                          Array.from(
+                            { length: Math.ceil(zone.width / 0.3) + 1 },
+                            (_, i) => {
+                              const lx = zx + i * 0.3 * SCALE * zoom;
+                              if (lx > zx + zw) return null;
+                              return (
+                                <Line
+                                  key={`tv${i}`}
+                                  points={[lx, zy, lx, zy + zh]}
+                                  stroke="rgba(100,120,140,0.1)"
+                                  strokeWidth={0.5}
+                                />
+                              );
+                            },
+                          )}
+                        {showLabels && (
+                          <Text
+                            x={zx + zw / 2 - 40}
+                            y={zy + zh / 2 - Math.max(4, 5 * zoom)}
+                            text={zone.label.toUpperCase()}
+                            width={80}
+                            fontSize={Math.max(7, 9 * zoom)}
+                            fill="rgba(42,42,53,0.3)"
+                            fontStyle="bold"
+                            align="center"
+                            listening={false}
+                          />
+                        )}
+                      </Group>
+                    );
+                  })}
+
+                  {/* ── Architectural walls — thick outer, thinner partitions ─ */}
                   {room.walls.map(
                     (
-                      w: { x1: number; y1: number; x2: number; y2: number },
+                      w: { x1: number; y1: number; x2: number; y2: number; type?: string },
                       i: number,
                     ) => (
                       <Line
@@ -1167,83 +1187,71 @@ export default function ConfiguratorContent() {
                           w.x2 * SCALE * zoom,
                           w.y2 * SCALE * zoom,
                         ]}
-                        stroke="#2a2a35"
-                        strokeWidth={Math.max(4, 6 * zoom)}
-                        lineCap="round"
+                        stroke={FP.WALL}
+                        strokeWidth={
+                          w.type === "internal"
+                            ? FP.WALL_T_PARTITION * SCALE * zoom
+                            : FP.WALL_T_M * SCALE * zoom
+                        }
+                        lineCap="square"
+                        lineJoin="miter"
+                        listening={false}
                       />
                     ),
                   )}
-                  {room.doors.map(
-                    (
-                      d: { x: number; y: number; width: number; side: string },
-                      i: number,
-                    ) => (
-                      <Group key={`door${i}`}>
-                        <Rect
-                          x={d.x * SCALE * zoom - (d.width * SCALE * zoom) / 2}
-                          y={d.y * SCALE * zoom - 4}
-                          width={d.width * SCALE * zoom}
-                          height={8}
-                          fill="#4ade80"
-                          cornerRadius={2}
-                          opacity={0.7}
+
+                  {/* ── Doors — gap eraser + leaf + swing arc ─────── */}
+                  {/* Internal doors are rendered as wall gaps only (wall segments
+                      are broken at the opening); ArchDoor is only used for
+                      exterior doors whose arc logic assumes outer-wall positions. */}
+                  {room.doors
+                    .filter(
+                      (d: { x: number; y: number; width: number; side?: string; type?: string }) =>
+                        d.type !== "internal",
+                    )
+                    .map(
+                      (
+                        d: {
+                          x: number;
+                          y: number;
+                          width: number;
+                          side?: string;
+                          orientation?: "horizontal" | "vertical";
+                        },
+                        i: number,
+                      ) => (
+                        <ArchDoor
+                          key={`door${i}`}
+                          door={d}
+                          canvasWidth={canvasWidth}
+                          canvasHeight={canvasHeight}
+                          zoom={zoom}
                         />
-                        {showLabels && (
-                          <Text
-                            x={d.x * SCALE * zoom - 10}
-                            y={
-                              d.y * SCALE * zoom +
-                              (d.side === "bottom" ? 10 : -18)
-                            }
-                            text="Door"
-                            fontSize={9 * zoom}
-                            fill="#4ade80"
-                          />
-                        )}
-                      </Group>
-                    ),
-                  )}
+                      ),
+                    )}
+
+                  {/* ── Windows — glass fill + centre glazing line ── */}
                   {room.windows.map(
                     (
-                      w: { x: number; y: number; width: number; side: string },
+                      w: {
+                        x: number;
+                        y: number;
+                        width: number;
+                        side: string;
+                      },
                       i: number,
                     ) => (
-                      <Group key={`win${i}`}>
-                        <Line
-                          points={
-                            w.side === "right"
-                              ? [
-                                  w.x * SCALE * zoom,
-                                  w.y * SCALE * zoom,
-                                  w.x * SCALE * zoom,
-                                  (w.y + w.width) * SCALE * zoom,
-                                ]
-                              : [
-                                  w.x * SCALE * zoom,
-                                  w.y * SCALE * zoom,
-                                  (w.x + w.width) * SCALE * zoom,
-                                  w.y * SCALE * zoom,
-                                ]
-                          }
-                          stroke="#4a8fd4"
-                          strokeWidth={4}
-                          opacity={0.6}
-                        />
-                        {showLabels && (
-                          <Text
-                            x={w.x * SCALE * zoom}
-                            y={
-                              w.y * SCALE * zoom + (w.side === "top" ? -14 : 6)
-                            }
-                            text="WINDOW"
-                            fontSize={9 * zoom}
-                            fill="#4a8fd4"
-                            fontStyle="bold"
-                          />
-                        )}
-                      </Group>
+                      <ArchWindow
+                        key={`win${i}`}
+                        window={w}
+                        canvasWidth={canvasWidth}
+                        canvasHeight={canvasHeight}
+                        zoom={zoom}
+                      />
                     ),
                   )}
+
+                  {/* ── Dimension labels ─────────────────────────── */}
                   {showDimensions && (
                     <>
                       <Text
@@ -1263,9 +1271,9 @@ export default function ConfiguratorContent() {
                       />
                     </>
                   )}
-                  {/* First draw rugs */}
+                  {/* ── Rugs drawn first, below all other furniture ─ */}
                   {canvasItems
-                    .filter((i) => i.category.toLowerCase().includes("rug"))
+                    .filter((i) => isRug(i))
                     .map((item) => {
                       const isSelected = selectedItemId === item.id;
                       return (
@@ -1287,77 +1295,23 @@ export default function ConfiguratorContent() {
                           onClick={() => setSelectedItemId(item.id)}
                           onTap={() => setSelectedItemId(item.id)}
                         >
-                          <Rect
-                            width={item.width * SCALE * zoom}
-                            height={item.depth * SCALE * zoom}
-                            fill={item.color}
-                            cornerRadius={6 * zoom}
-                            stroke={isSelected ? "#c4a265" : "rgba(0,0,0,0.1)"}
-                            strokeWidth={isSelected ? 2 : 1}
-                            shadowColor={
-                              isSelected
-                                ? "rgba(196,162,101,0.5)"
-                                : "rgba(0,0,0,0.2)"
-                            }
-                            shadowBlur={isSelected ? 16 : 8}
-                            shadowOffsetY={isSelected ? 0 : 4}
+                          <FurnitureSymbol
+                            name={item.name}
+                            category={item.category}
+                            color={item.color}
+                            pxW={item.width * SCALE * zoom}
+                            pxD={item.depth * SCALE * zoom}
+                            isSelected={isSelected}
+                            showLabel={showLabels}
+                            zoom={zoom}
                           />
-                          <Rect
-                            x={4 * zoom}
-                            y={4 * zoom}
-                            width={item.width * SCALE * zoom - 8 * zoom}
-                            height={item.depth * SCALE * zoom - 8 * zoom}
-                            fill="rgba(255,255,255,0.15)"
-                            cornerRadius={4 * zoom}
-                          />
-
-                          <Rect
-                            x={4 * zoom}
-                            y={
-                              (item.depth * SCALE * zoom) / 2 -
-                              (showLabels ? 12 * zoom : 8 * zoom)
-                            }
-                            width={item.width * SCALE * zoom - 8 * zoom}
-                            height={showLabels ? 24 * zoom : 16 * zoom}
-                            fill="rgba(255,255,255,0.9)"
-                            cornerRadius={12 * zoom}
-                            shadowColor="rgba(0,0,0,0.1)"
-                            shadowBlur={4}
-                            shadowOffsetY={2}
-                          />
-                          <Text
-                            text={item.name.toUpperCase()}
-                            x={8 * zoom}
-                            y={
-                              (item.depth * SCALE * zoom) / 2 -
-                              (showLabels ? 8 * zoom : 4 * zoom)
-                            }
-                            width={item.width * SCALE * zoom - 16 * zoom}
-                            fontSize={Math.max(5, 7 * zoom)}
-                            fill="#1a1a2e"
-                            fontStyle="bold"
-                            align="center"
-                            ellipsis
-                            wrap="none"
-                          />
-                          {showLabels && (
-                            <Text
-                              text={`$${item.price}`}
-                              x={8 * zoom}
-                              y={(item.depth * SCALE * zoom) / 2 + 2 * zoom}
-                              width={item.width * SCALE * zoom - 16 * zoom}
-                              fontSize={Math.max(4, 6 * zoom)}
-                              fill="var(--color-text-secondary)"
-                              align="center"
-                            />
-                          )}
                         </Group>
                       );
                     })}
 
-                  {/* Then draw everything else */}
+                  {/* ── All other furniture ──────────────────────── */}
                   {canvasItems
-                    .filter((i) => !i.category.toLowerCase().includes("rug"))
+                    .filter((i) => !isRug(i))
                     .map((item) => {
                       const isSelected = selectedItemId === item.id;
                       return (
@@ -1379,70 +1333,16 @@ export default function ConfiguratorContent() {
                           onClick={() => setSelectedItemId(item.id)}
                           onTap={() => setSelectedItemId(item.id)}
                         >
-                          <Rect
-                            width={item.width * SCALE * zoom}
-                            height={item.depth * SCALE * zoom}
-                            fill={item.color}
-                            cornerRadius={6 * zoom}
-                            stroke={isSelected ? "#c4a265" : "rgba(0,0,0,0.1)"}
-                            strokeWidth={isSelected ? 2 : 1}
-                            shadowColor={
-                              isSelected
-                                ? "rgba(196,162,101,0.5)"
-                                : "rgba(0,0,0,0.2)"
-                            }
-                            shadowBlur={isSelected ? 16 : 8}
-                            shadowOffsetY={isSelected ? 0 : 4}
+                          <FurnitureSymbol
+                            name={item.name}
+                            category={item.category}
+                            color={item.color}
+                            pxW={item.width * SCALE * zoom}
+                            pxD={item.depth * SCALE * zoom}
+                            isSelected={isSelected}
+                            showLabel={showLabels}
+                            zoom={zoom}
                           />
-                          <Rect
-                            x={4 * zoom}
-                            y={4 * zoom}
-                            width={item.width * SCALE * zoom - 8 * zoom}
-                            height={item.depth * SCALE * zoom - 8 * zoom}
-                            fill="rgba(255,255,255,0.15)"
-                            cornerRadius={4 * zoom}
-                          />
-
-                          <Rect
-                            x={4 * zoom}
-                            y={
-                              (item.depth * SCALE * zoom) / 2 -
-                              (showLabels ? 12 * zoom : 8 * zoom)
-                            }
-                            width={item.width * SCALE * zoom - 8 * zoom}
-                            height={showLabels ? 24 * zoom : 16 * zoom}
-                            fill="rgba(255,255,255,0.9)"
-                            cornerRadius={12 * zoom}
-                            shadowColor="rgba(0,0,0,0.1)"
-                            shadowBlur={4}
-                            shadowOffsetY={2}
-                          />
-                          <Text
-                            text={item.name.toUpperCase()}
-                            x={8 * zoom}
-                            y={
-                              (item.depth * SCALE * zoom) / 2 -
-                              (showLabels ? 8 * zoom : 4 * zoom)
-                            }
-                            width={item.width * SCALE * zoom - 16 * zoom}
-                            fontSize={Math.max(5, 7 * zoom)}
-                            fill="#1a1a2e"
-                            fontStyle="bold"
-                            align="center"
-                            ellipsis
-                            wrap="none"
-                          />
-                          {showLabels && (
-                            <Text
-                              text={`$${item.price}`}
-                              x={8 * zoom}
-                              y={(item.depth * SCALE * zoom) / 2 + 2 * zoom}
-                              width={item.width * SCALE * zoom - 16 * zoom}
-                              fontSize={Math.max(4, 6 * zoom)}
-                              fill="var(--color-text-secondary)"
-                              align="center"
-                            />
-                          )}
                         </Group>
                       );
                     })}
