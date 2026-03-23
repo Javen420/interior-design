@@ -9,6 +9,7 @@
 This application was developed as a comprehensive technical demonstration for a **Digital Business** course at University. It serves as a strategic proof-of-concept architectural study on how **Digital Transformation** can radically improve traditionally "low-tech" industries like Interior Design and Renovation.
 
 In many legacy sectors, the process remains manual and opaque. Kairos explores how digitalization provides a significant **competitive advantage** through:
+
 - **Value Creation**: Moving from passive consultations to an active, tech-driven design experience.
 - **Information Asymmetry**: Bridging the gap between a designer’s vision and a client’s understanding via real-time AI visualization.
 - **Strategic Agility**: Demonstrating how firms can pivot towards AI-integrated services to lead in the modern digital economy.
@@ -24,7 +25,9 @@ The traditional interior design process is often fragmented, expensive, and over
 ## ✨ Core Features
 
 ### 1. Intelligent Design Wizard
+
 A multi-step guided experience that captures:
+
 - **Flat Type & Room Selection**: Specifically tailored for Singaporean housing layouts.
 - **Style Profiling**: Choose from Minimalist, Industrial, Scandinavian, Japandi, and more.
 - **Color Palettes**: Define the mood of your space.
@@ -32,15 +35,18 @@ A multi-step guided experience that captures:
 - **Budget Management**: Real-time tracking against furniture selections.
 
 ### 2. Pro Room Configurator (2D Blueprint)
+
 - **Interactive 2D Canvas**: Drag-and-drop furniture items on a precision-scaled blueprint.
 - **Collision Detection**: Smart layout engine prevents furniture overlaps (with rug exceptions).
 - **Smooth Drag UI**: Native 60fps interaction with graceful bounce-back animations for invalid placements.
 - **Inventory Swap**: Instantly swap items with AI-suggested alternatives that fit your style and budget.
 
 ### 3. AI Photorealistic Rendering
+
 - **3D Visualization**: Convert your 2D blueprints into high-fidelity AI-generated 3D renders consistent with your chosen style profile.
 
 ### 4. Designer Matching & Dashboard
+
 - **Analytics**: Track your project costs and compare them against regional benchmarks.
 - **Matching**: Get connected with professional interior designers who specialize in your specific generated style.
 
@@ -49,22 +55,26 @@ A multi-step guided experience that captures:
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18.x or later
 - npm or yarn
 
 ### Installation
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/Javen420/interior-design.git
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Run the development server**:
+
    ```bash
    npm run dev
    ```
@@ -83,3 +93,8 @@ A multi-step guided experience that captures:
 - **Animations**: Framer Motion
 - **Data Visualization**: Recharts
 - **Icons**: Lucide React
+
+## If you face issues with ThreeJS just download the legacy version
+
+- Run this command:
+  `npm install @google/model-viewer --legacy-peer-deps`
