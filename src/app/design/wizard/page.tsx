@@ -617,6 +617,9 @@ export default function WizardPage() {
                       textAlign: "left",
                       padding: 16,
                       position: "relative",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
                       border: `2px solid ${sel ? "var(--color-accent)" : "var(--color-border)"}`,
                       background: sel ? "var(--color-accent-bg)" : "#fff",
                     }}

@@ -20,7 +20,7 @@ interface Summary {
   totalContractors: number;
 }
 
-export default function AnalyticsPage() {
+export default function BusinessAnalyticsPage() {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [contractors, setContractors] = useState<Contractor[]>([]);
   const [loading, setLoading] = useState(true);
