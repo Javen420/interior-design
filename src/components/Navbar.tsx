@@ -1,29 +1,47 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
   Home,
   Palette,
-  LayoutDashboard,
-  BarChart3,
+  Hammer,
   Eye,
+  FolderOpen,
+  BarChart3,
   Menu,
   X,
 } from "lucide-react";
 
-const navItems = [
+const homeownerItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/design/wizard", label: "Design Tool", icon: Palette },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/renovation", label: "My Renovation", icon: Hammer },
   { href: "/ar-demo", label: "AR Demo", icon: Eye },
+];
+
+const businessItems = [
+  { href: "/business/projects", label: "Projects", icon: FolderOpen },
+  { href: "/business/analytics", label: "Contractor Analytics", icon: BarChart3 },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
 
+  const isBusinessRoute = pathname.startsWith("/business");
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navItems = isBusinessRoute ? businessItems : homeownerItems;
+
+  const handleToggle = (mode: "homeowner" | "business") => {
+    if (mode === "business" && !isBusinessRoute) {
+      router.push("/business/projects");
+    } else if (mode === "homeowner" && isBusinessRoute) {
+      router.push("/");
+    }
+    setMobileOpen(false);
+  };
 
   return (
     <nav className="navbar">
@@ -56,6 +74,53 @@ export default function Navbar() {
             Kairos Interior Studio
           </span>
         </Link>
+
+        {/* View Toggle */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            background: "var(--color-bg)",
+            border: "1px solid var(--color-border)",
+            borderRadius: 100,
+            height: 34,
+            padding: 2,
+            flexShrink: 0,
+          }}
+        >
+          {(["homeowner", "business"] as const).map((mode) => {
+            const active =
+              (mode === "business" && isBusinessRoute) ||
+              (mode === "homeowner" && !isBusinessRoute);
+            return (
+              <button
+                key={mode}
+                onClick={() => handleToggle(mode)}
+                style={{
+                  padding: "0 16px",
+                  height: 28,
+                  borderRadius: 100,
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: 13,
+                  fontFamily: "var(--font-body)",
+                  fontWeight: active ? 600 : 400,
+                  background: active ? "var(--color-accent)" : "transparent",
+                  color: active ? "#fff" : "var(--color-text-secondary)",
+                  transition: "all 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "auto",
+                  minWidth: "auto",
+                }}
+              >
+                {mode === "homeowner" ? "Homeowner" : "Business"}
+              </button>
+            );
+          })}
+        </div>
+
         <button
           className="mobile-menu-btn"
           onClick={() => setMobileOpen((prev) => !prev)}

@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Calendar, CheckCircle2, Clock, Circle, AlertTriangle, DollarSign, Info, Mail, FileText } from 'lucide-react';
+import { Calendar, CheckCircle2, Clock, Circle, AlertTriangle, Info, Mail, FileText } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface Project {
@@ -15,13 +16,16 @@ interface Project {
 
 const timelineStages = ['Design', 'Procurement', 'Demolition', 'Carpentry', 'Electrical', 'Painting', 'Styling', 'Handover'];
 
-export default function DashboardPage() {
+export default function ProjectDetailPage() {
+  const params = useParams();
+  const id = params?.id;
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/projects/1').then(r => r.json()).then(d => { setProject(d); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+    if (!id) return;
+    fetch(`/api/projects/${id}`).then(r => r.json()).then(d => { setProject(d); setLoading(false); }).catch(() => setLoading(false));
+  }, [id]);
 
   if (loading) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ width: 32, height: 32, border: '2px solid var(--color-accent)', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }} /></div>;
   if (!project) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><p>Project not found</p></div>;

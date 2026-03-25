@@ -22,17 +22,17 @@
     ],
     "progressUpdates": [
       { "date": "2025-11-01", "text": "Kick-off meeting completed. Emily loves the Scandinavian concept direction." },
-      { "date": "2025-11-08", "text": "Site measurements taken. Room dimensions confirmed at 7m × 4m." },
-      { "date": "2025-11-15", "text": "Three mood board concepts presented. Emily selected Option B — warm tones with light oak." },
-      { "date": "2025-11-28", "text": "3D renders finalized. Minor revision requested for shelving placement." },
+      { "date": "2025-11-08", "text": "Site measurements taken. Room dimensions confirmed at 7m × 4m.", "photos": [{ "id": "measure-1", "caption": "Laser measurement of living room width" }, { "id": "measure-2", "caption": "Existing room overview before work begins" }] },
+      { "date": "2025-11-15", "text": "Three mood board concepts presented. Emily selected Option B — warm tones with light oak.", "photos": [{ "id": "mood-1", "caption": "Mood board Option B — selected" }] },
+      { "date": "2025-11-28", "text": "3D renders finalized. Minor revision requested for shelving placement.", "photos": [{ "id": "render-1", "caption": "3D render — living room view from entrance" }, { "id": "render-2", "caption": "3D render — shelving unit close-up" }, { "id": "render-3", "caption": "3D render — window seating area" }] },
       { "date": "2025-12-01", "text": "Design formally approved. Procurement phase begins." },
       { "date": "2025-12-12", "text": "Oak flooring sample approved. Order placed with 4-week lead time." },
       { "date": "2025-12-20", "text": "All material orders confirmed. Custom shelving ETA: Jan 25." },
-      { "date": "2026-01-10", "text": "Demolition started. Old vinyl flooring removed. Walls prepped for painting." },
-      { "date": "2026-01-20", "text": "Electrical rewiring for new pendant lighting completed." },
-      { "date": "2026-02-01", "text": "Oak flooring installation begins. Expected completion: Feb 15." },
-      { "date": "2026-02-15", "text": "Flooring done! Walls painted in Eggshell White. Looking beautiful." },
-      { "date": "2026-03-01", "text": "Feature wall with oak slat paneling installed. Stunning result." }
+      { "date": "2026-01-10", "text": "Demolition started. Old vinyl flooring removed. Walls prepped for painting.", "photos": [{ "id": "demo-1", "caption": "Vinyl flooring removal in progress" }, { "id": "demo-2", "caption": "Walls stripped and prepped" }] },
+      { "date": "2026-01-20", "text": "Electrical rewiring for new pendant lighting completed.", "budgetImpact": { "category": "Lighting", "amount": 200, "reason": "Additional wiring points for dimmer switches" } },
+      { "date": "2026-02-01", "text": "Oak flooring installation begins. Expected completion: Feb 15.", "photos": [{ "id": "floor-1", "caption": "First planks of oak flooring being laid" }, { "id": "floor-2", "caption": "Subfloor preparation with underlayment" }] },
+      { "date": "2026-02-15", "text": "Flooring done! Walls painted in Eggshell White. Looking beautiful.", "photos": [{ "id": "paint-1", "caption": "New oak flooring installed" }, { "id": "paint-2", "caption": "Wall painting complete — Eggshell White" }, { "id": "paint-3", "caption": "Natural light hitting the new floor" }], "budgetImpact": { "category": "Wall Treatments", "amount": 400, "reason": "Additional plastering required for uneven walls" } },
+      { "date": "2026-03-01", "text": "Feature wall with oak slat paneling installed. Stunning result.", "photos": [{ "id": "feature-1", "caption": "Oak slat paneling — completed feature wall" }, { "id": "feature-2", "caption": "Close-up of slat detailing" }], "budgetImpact": { "category": "Labour & Installation", "amount": 100, "reason": "Extra labour for precision alignment of slats" } }
     ],
     "budget": {
       "total": 17500,
@@ -59,12 +59,12 @@
     "estimatedEnd": "2025-10-30",
     "milestones": [
       { "stage": "Design Consultation", "status": "completed", "date": "2025-06-01", "description": "Client brief received — calming retreat with natural elements" },
-      { "stage": "Concept Development", "status": "completed", "date": "2025-06-15", "description": "Japandi concept with bamboo and linen textures presented" },
-      { "stage": "Design Approval", "status": "completed", "date": "2025-07-01", "description": "Design approved on first presentation — client thrilled" },
       { "stage": "Material Procurement", "status": "completed", "date": "2025-07-20", "description": "Bamboo panels and clay plaster sourced from Japan" },
       { "stage": "Demolition & Prep", "status": "completed", "date": "2025-08-05", "description": "Room cleared and prepped for new wall finishes" },
-      { "stage": "Construction", "status": "completed", "date": "2025-09-01", "description": "Clay feature wall completed. Platform bed base built." },
-      { "stage": "Furniture Installation", "status": "completed", "date": "2025-10-01", "description": "All furniture and soft furnishings installed" },
+      { "stage": "Electrical", "status": "completed", "date": "2025-08-15", "description": "Power points and lighting installed" },
+      { "stage": "Painting", "status": "completed", "date": "2025-08-20", "description": "Clay feature wall completed." },
+      { "stage": "Carpentry", "status": "completed", "date": "2025-09-01", "description": "Platform bed frame built with integrated storage." },
+      { "stage": "Styling", "status": "completed", "date": "2025-10-01", "description": "All furniture, soft furnishings, and styling complete" },
       { "stage": "Final Handover", "status": "completed", "date": "2025-10-30", "description": "Project handed over — client delighted with the result" }
     ],
     "progressUpdates": [
