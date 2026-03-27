@@ -155,10 +155,11 @@ function CameraSetup({ room }: { room: RoomData }) {
   const { camera } = useThree();
 
   useEffect(() => {
-    // Place the camera above the front-right corner of the room.
-    // The 3D world is centred at the room origin, so no half-width offset needed.
-    const dist = Math.max(room.width, room.length) * 0.85;
-    camera.position.set(dist, dist * 0.75, dist);
+    // Place the camera inside the room at human eye level (1.6 m), offset
+    // toward the back wall so the user's first view looks across the interior.
+    // room.length * 0.35 keeps the camera well inside every supported room size
+    // (smallest room is 4 m deep → offset 1.4 m from centre, 0.6 m from wall).
+    camera.position.set(0, 1.6, room.length * 0.35);
     camera.lookAt(0, 0.8, 0);
   }, [camera, room.width, room.length]);
 
@@ -166,7 +167,7 @@ function CameraSetup({ room }: { room: RoomData }) {
     <OrbitControls
       target={[0, 0.8, 0]}
       maxPolarAngle={Math.PI / 2 - 0.02}
-      minDistance={2}
+      minDistance={1}
       maxDistance={Math.max(room.width, room.length) * 3}
       enableDamping
       dampingFactor={0.08}

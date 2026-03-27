@@ -303,6 +303,8 @@ export default function ConfiguratorContent() {
 
   const handleAddFromCatalog = (item: (typeof fullCatalog)[0]) => {
     if (!room) return;
+    // Enforce budget maximum: block items that would push the total over budgetMax
+    if (totalCost + item.price > preferences.budgetMax) return;
     const newItem: FurnitureItem = {
       id: `item-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
       catalogId: item.id,
@@ -675,10 +677,14 @@ export default function ConfiguratorContent() {
               {expandedCategory === cat &&
                 filteredCatalog
                   .filter((i) => i.category === cat)
-                  .map((item) => (
+                  .map((item) => {
+                    const wouldExceedBudget = totalCost + item.price > preferences.budgetMax;
+                    return (
                     <button
                       key={item.id}
                       onClick={() => handleAddFromCatalog(item)}
+                      disabled={wouldExceedBudget}
+                      title={wouldExceedBudget ? "Adding this item would exceed your maximum budget" : undefined}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -686,11 +692,12 @@ export default function ConfiguratorContent() {
                         padding: 8,
                         borderRadius: 8,
                         width: "100%",
-                        cursor: "pointer",
+                        cursor: wouldExceedBudget ? "not-allowed" : "pointer",
                         background: "none",
                         border: "none",
                         transition: "background 0.15s",
                         textAlign: "left",
+                        opacity: wouldExceedBudget ? 0.4 : 1,
                       }}
                     >
                       <div
@@ -725,7 +732,8 @@ export default function ConfiguratorContent() {
                         </div>
                       </div>
                     </button>
-                  ))}
+                    );
+                  })}
             </div>
           ))}
         </div>
@@ -1447,12 +1455,16 @@ export default function ConfiguratorContent() {
                 fontSize: 12,
                 fontWeight: 600,
                 color:
-                  totalCost <= preferences.budgetMax
+                  totalCost < preferences.budgetMin
+                    ? "var(--color-warning, #f59e0b)"
+                    : totalCost <= preferences.budgetMax
                     ? "var(--color-success)"
                     : "var(--color-danger)",
               }}
             >
-              {totalCost <= preferences.budgetMax
+              {totalCost < preferences.budgetMin
+                ? "⚠ UNDER BUDGET"
+                : totalCost <= preferences.budgetMax
                 ? "✓ WITHIN BUDGET"
                 : "⚠ OVER BUDGET"}
             </div>
@@ -1467,17 +1479,47 @@ export default function ConfiguratorContent() {
           >
             SGD ${totalCost.toLocaleString()}
           </div>
-          <div className="progress-bar" style={{ marginBottom: 20, height: 6 }}>
+          <div
+            className="progress-bar"
+            style={{ marginBottom: 4, height: 6, position: "relative" }}
+          >
             <div
               className="progress-bar-fill"
               style={{
                 width: `${Math.min(100, (totalCost / preferences.budgetMax) * 100)}%`,
                 background:
-                  totalCost <= preferences.budgetMax
+                  totalCost < preferences.budgetMin
+                    ? "var(--color-warning, #f59e0b)"
+                    : totalCost <= preferences.budgetMax
                     ? "var(--color-success)"
                     : "var(--color-danger)",
               }}
             />
+            {/* Min-budget marker tick */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: `${(preferences.budgetMin / preferences.budgetMax) * 100}%`,
+                width: 2,
+                height: "100%",
+                background: "var(--color-text-secondary)",
+                opacity: 0.5,
+              }}
+            />
+          </div>
+          {/* Budget range labels */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: 10,
+              color: "var(--color-text-secondary)",
+              marginBottom: 16,
+            }}
+          >
+            <span>Min ${preferences.budgetMin.toLocaleString()}</span>
+            <span>Max ${preferences.budgetMax.toLocaleString()}</span>
           </div>
           <button
             onClick={handleSave}

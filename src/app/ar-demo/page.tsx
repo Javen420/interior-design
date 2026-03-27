@@ -118,7 +118,7 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
         ar-modes="webxr scene-viewer quick-look"
         ar-scale="auto"
         ar-placement="floor"
-        camera-orbit="0deg 75deg 4m"
+        camera-orbit="30deg 70deg 1.5m"
         field-of-view="45deg"
         min-camera-orbit="auto auto 0.5m"
         max-camera-orbit="auto auto 8m"
@@ -255,7 +255,10 @@ export default function ARDemoPage() {
   const viewerRef = useRef<ModelViewerElement | null>(null);
   const loadStartRef = useRef<number>(0);
 
-  const cameraState = useRef({ theta: 0, phi: 75, radius: 4 });
+  // Start inside the model: 1.5 m from centre at near-eye-level elevation.
+  // theta=30 gives a slight angle for depth perception; phi=70 is ~20° above
+  // the horizon — natural first-person standing perspective.
+  const cameraState = useRef({ theta: 30, phi: 70, radius: 1.5 });
 
   useEffect(() => {
     if (!viewerReady) return;
@@ -322,7 +325,7 @@ export default function ARDemoPage() {
   };
 
   const resetCamera = () => {
-    cameraState.current = { theta: 0, phi: 75, radius: 4 };
+    cameraState.current = { theta: 30, phi: 70, radius: 1.5 };
     updateCamera();
   };
 
