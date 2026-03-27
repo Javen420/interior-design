@@ -1,8 +1,8 @@
 "use client";
 
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls, Environment, SoftShadows, useGLTF } from "@react-three/drei";
+import { OrbitControls, Environment, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { useDesignStore, type GeneratedDesign, type RoomData } from "@/store/designStore";
 import { FurnitureModel } from "@/components/FurnitureModel";
@@ -183,7 +183,6 @@ function RoomScene({ design }: { design: GeneratedDesign }) {
   return (
     <>
       <Lighting />
-      <SoftShadows size={20} samples={16} />
       <Environment preset="apartment" />
       <Floor room={room} />
 
@@ -216,10 +215,24 @@ function EmptyState() {
 // ── DesignViewer3D ──────────────────────────────────────────────────────────
 
 export function DesignViewer3D({ design }: { design: GeneratedDesign | null }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!design) {
     return (
       <div className="w-full h-full flex items-center justify-center bg-neutral-50 rounded-lg text-neutral-500 text-sm">
         Complete the design wizard to see your 3D room
+      </div>
+    );
+  }
+
+  if (!mounted) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-neutral-50 rounded-lg text-neutral-500 text-sm">
+        Loading 3D view…
       </div>
     );
   }
