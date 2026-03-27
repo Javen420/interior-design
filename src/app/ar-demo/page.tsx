@@ -1,8 +1,15 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Script from "next/script";
 import { useDesignStore } from "@/store/designStore";
+
+// Dynamically imported — uses WebXR + Three.js Canvas, must be client-only
+const ARWalkthrough = dynamic(
+  () => import("@/components/ARWalkthrough").then((m) => ({ default: m.ARWalkthrough })),
+  { ssr: false },
+);
 
 // ── model-viewer custom element types ────────────────────────────────────────
 declare global {
@@ -115,13 +122,14 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
         exposure="1"
         ar
         xr-environment
-        ar-modes="webxr scene-viewer quick-look"
-        ar-scale="auto"
+        ar-modes="scene-viewer webxr quick-look"
+        ar-scale="fixed"
         ar-placement="floor"
-        camera-orbit="30deg 70deg 1.5m"
+        camera-orbit="25deg 65deg auto"
+        camera-target="auto"
         field-of-view="45deg"
-        min-camera-orbit="auto auto 0.5m"
-        max-camera-orbit="auto auto 8m"
+        min-camera-orbit="auto auto 2m"
+        max-camera-orbit="auto auto 20m"
         min-field-of-view="30deg"
         max-field-of-view="80deg"
         style={{ width: "100%", height: "100%", background: "#f5f3f0" }}
@@ -255,10 +263,11 @@ export default function ARDemoPage() {
   const viewerRef = useRef<ModelViewerElement | null>(null);
   const loadStartRef = useRef<number>(0);
 
-  // Start inside the model: 1.5 m from centre at near-eye-level elevation.
-  // theta=30 gives a slight angle for depth perception; phi=70 is ~20° above
-  // the horizon — natural first-person standing perspective.
-  const cameraState = useRef({ theta: 30, phi: 70, radius: 1.5 });
+  // Start outside the model at a comfortable overview distance.
+  // theta=25 gives a slight angle; phi=65 is ~25° above horizon.
+  // radius=10 works for typical apartment models (6–10 m wide); auto-framing
+  // via camera-orbit="auto" also handles this but we need a JS fallback value.
+  const cameraState = useRef({ theta: 25, phi: 65, radius: 10 });
 
   useEffect(() => {
     if (!viewerReady) return;
@@ -325,7 +334,7 @@ export default function ARDemoPage() {
   };
 
   const resetCamera = () => {
-    cameraState.current = { theta: 30, phi: 70, radius: 1.5 };
+    cameraState.current = { theta: 25, phi: 65, radius: 10 };
     updateCamera();
   };
 
@@ -623,6 +632,35 @@ export default function ARDemoPage() {
             </div>
           )}
         </div>
+
+        {/* ── AR Walkthrough ──────────────────────────────────────────────── */}
+        {design && (
+          <div className="mb-8">
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <div className="chip mb-0">AR WALKTHROUGH</div>
+              <span
+                style={{
+                  background: "var(--color-success-bg)",
+                  color: "var(--color-success)",
+                  border: "1px solid rgba(45,159,91,0.2)",
+                  borderRadius: 20,
+                  padding: "2px 10px",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.05em",
+                }}
+              >
+                NEW
+              </span>
+            </div>
+            <h2 className="mb-2">Walk Through Your Room in AR</h2>
+            <p style={{ color: "var(--color-text-secondary)", maxWidth: 680, marginBottom: 20 }}>
+              Place your virtual room in your real space and physically walk around it at 1:1 scale.
+              Requires a supported mobile device — point at the floor and tap to anchor.
+            </p>
+            <ARWalkthrough design={design} />
+          </div>
+        )}
 
         {/* Design metadata — sourced from real store ───────────────────────── */}
         {design && (

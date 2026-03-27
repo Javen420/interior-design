@@ -44,107 +44,111 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-      <div className="container-main nav-inner">
-        <Link href="/" className="brand" onClick={() => setMobileOpen(false)}>
-          <div
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 10,
-              background: "var(--color-accent)",
-              color: "#fff",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 16,
-              fontWeight: 700,
-              fontFamily: "var(--font-heading)",
-            }}
-          >
-            K
+    <>
+      <nav className="navbar">
+        <div className="container-main nav-inner">
+          {/* Brand */}
+          <Link href="/" className="brand" onClick={() => setMobileOpen(false)}>
+            <div>K</div>
+            <span className="brand-text" style={{ fontWeight: 600, fontFamily: "var(--font-heading)" }}>
+              Kairos Interior Studio
+            </span>
+          </Link>
+
+          {/* View toggle — desktop only (also rendered inside mobile drawer) */}
+          <div className="view-toggle">
+            {(["homeowner", "business"] as const).map((mode) => {
+              const active =
+                (mode === "business" && isBusinessRoute) ||
+                (mode === "homeowner" && !isBusinessRoute);
+              return (
+                <button
+                  key={mode}
+                  onClick={() => handleToggle(mode)}
+                  style={{
+                    padding: "0 16px",
+                    height: 28,
+                    borderRadius: 100,
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: 13,
+                    fontFamily: "var(--font-body)",
+                    fontWeight: active ? 600 : 400,
+                    background: active ? "var(--color-accent)" : "transparent",
+                    color: active ? "#fff" : "var(--color-text-secondary)",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {mode === "homeowner" ? "Homeowner" : "Business"}
+                </button>
+              );
+            })}
           </div>
-          <span
-            style={{
-              fontSize: 16,
-              fontWeight: 600,
-              fontFamily: "var(--font-heading)",
-            }}
+
+          {/* Nav links — inline on desktop, drawer on mobile */}
+          <div className={`nav-links ${mobileOpen ? "open" : ""}`}>
+            {navItems.map(({ href, label, icon: Icon }) => {
+              const active =
+                pathname === href || (href !== "/" && pathname.startsWith(href));
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`nav-link ${active ? "active" : ""}`}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <span className="nav-link-icon" style={{ opacity: active ? 1 : 0.5, flexShrink: 0 }}>
+                    <Icon size={20} />
+                  </span>
+                  {label}
+                </Link>
+              );
+            })}
+
+            {/* View toggle inside drawer — mobile only */}
+            <div className="nav-mobile-toggle">
+              <div className="nav-mobile-toggle-label">Switch view</div>
+              <div className="nav-mobile-toggle-row">
+                {(["homeowner", "business"] as const).map((mode) => {
+                  const active =
+                    (mode === "business" && isBusinessRoute) ||
+                    (mode === "homeowner" && !isBusinessRoute);
+                  return (
+                    <button
+                      key={mode}
+                      onClick={() => handleToggle(mode)}
+                      className={`nav-mobile-toggle-btn ${active ? "active" : ""}`}
+                    >
+                      {mode === "homeowner" ? "Homeowner" : "Business"}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Hamburger */}
+          <button
+            className="mobile-menu-btn"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
-            Kairos Interior Studio
-          </span>
-        </Link>
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+      </nav>
 
-        {/* View Toggle */}
+      {/* Backdrop — closes menu when tapping outside */}
+      {mobileOpen && (
         <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            background: "var(--color-bg)",
-            border: "1px solid var(--color-border)",
-            borderRadius: 100,
-            height: 34,
-            padding: 2,
-            flexShrink: 0,
-          }}
-        >
-          {(["homeowner", "business"] as const).map((mode) => {
-            const active =
-              (mode === "business" && isBusinessRoute) ||
-              (mode === "homeowner" && !isBusinessRoute);
-            return (
-              <button
-                key={mode}
-                onClick={() => handleToggle(mode)}
-                style={{
-                  padding: "0 16px",
-                  height: 28,
-                  borderRadius: 100,
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 13,
-                  fontFamily: "var(--font-body)",
-                  fontWeight: active ? 600 : 400,
-                  background: active ? "var(--color-accent)" : "transparent",
-                  color: active ? "#fff" : "var(--color-text-secondary)",
-                  transition: "all 0.2s ease",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  minHeight: "auto",
-                  minWidth: "auto",
-                }}
-              >
-                {mode === "homeowner" ? "Homeowner" : "Business"}
-              </button>
-            );
-          })}
-        </div>
-
-        <button
-          className="mobile-menu-btn"
-          onClick={() => setMobileOpen((prev) => !prev)}
-        >
-          {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
-
-        <div className={`nav-links ${mobileOpen ? "open" : ""}`}>
-          {navItems.map(({ href, label }) => {
-            const active =
-              pathname === href || (href !== "/" && pathname.startsWith(href));
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={`nav-link ${active ? "active" : ""}`}
-                onClick={() => setMobileOpen(false)}
-              >
-                {label}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    </nav>
+          className="nav-backdrop"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden
+        />
+      )}
+    </>
   );
 }
