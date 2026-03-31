@@ -48,7 +48,7 @@ export default function Navbar() {
       <nav className="navbar">
         <div className="container-main nav-inner">
           {/* Brand */}
-          <Link href="/" className="brand" onClick={() => setMobileOpen(false)}>
+          <Link href="/" className="brand" style={{ marginLeft: -160 }} onClick={() => setMobileOpen(false)}>
             <div>K</div>
             <span className="brand-text" style={{ fontWeight: 600, fontFamily: "var(--font-heading)" }}>
               Kairos Interior Studio
@@ -56,7 +56,7 @@ export default function Navbar() {
           </Link>
 
           {/* View toggle — desktop only (also rendered inside mobile drawer) */}
-          <div className="view-toggle">
+          <div className="view-toggle" style={{ marginLeft: 30 }}>
             {(["homeowner", "business"] as const).map((mode) => {
               const active =
                 (mode === "business" && isBusinessRoute) ||
@@ -68,12 +68,13 @@ export default function Navbar() {
                   style={{
                     padding: "0 16px",
                     height: 28,
+                    minWidth: 90,
                     borderRadius: 100,
                     border: "none",
                     cursor: "pointer",
                     fontSize: 13,
                     fontFamily: "var(--font-body)",
-                    fontWeight: active ? 600 : 400,
+                    fontWeight: 600,
                     background: active ? "var(--color-accent)" : "transparent",
                     color: active ? "#fff" : "var(--color-text-secondary)",
                     transition: "all 0.2s ease",
