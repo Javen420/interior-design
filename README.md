@@ -76,11 +76,28 @@ A multi-step guided experience that captures:
 3. **Run the development server**:
 
    ```bash
-   npm run dev
+   npm run dev -- --webpack
    ```
 
 4. **Open the application**:
    Navigate to [http://localhost:3000](http://localhost:3000) (or the port shown in your terminal).
+
+### Alternative Commands
+
+- **Production build**:
+
+  ```bash
+  npm run build
+  npm run start
+  ```
+
+- **Note for Windows / Turbopack issues**:
+
+  If `npm run dev` fails with an SWC or Turbopack native binding error, use:
+
+  ```bash
+  npm run dev -- --webpack
+  ```
 
 ---
 
