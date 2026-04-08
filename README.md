@@ -111,7 +111,3 @@ A multi-step guided experience that captures:
 - **Data Visualization**: Recharts
 - **Icons**: Lucide React
 
-## If you face issues with ThreeJS just download the legacy version
-
-- Run this command:
-  `npm install @google/model-viewer --legacy-peer-deps`
