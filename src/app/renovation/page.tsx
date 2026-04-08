@@ -209,8 +209,20 @@ export default function RenovationPage() {
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-light)" />
                   <XAxis dataKey="date" tick={{ fill: 'var(--color-text-secondary)', fontSize: 11 }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fill: 'var(--color-text-secondary)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`} />
-                  <Tooltip contentStyle={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, color: 'var(--color-text)' }} formatter={(value: number) => [`$${value.toLocaleString()}`, '']} />
+                  <YAxis
+                    tick={{ fill: 'var(--color-text-secondary)', fontSize: 11 }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(value) =>
+                      typeof value === 'number' ? `$${(value / 1000).toFixed(0)}k` : ''
+                    }
+                  />
+                  <Tooltip
+                    contentStyle={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, color: 'var(--color-text)' }}
+                    formatter={(value) =>
+                      typeof value === 'number' ? [`$${value.toLocaleString()}`, ''] : ['', '']
+                    }
+                  />
                   <ReferenceLine y={totalEstimated} stroke="var(--color-border)" strokeDasharray="6 4" label={{ value: 'Estimated', position: 'right', fill: 'var(--color-text-muted)', fontSize: 11 }} />
                   <Area type="monotone" dataKey="actual" stroke="#2E8B68" strokeWidth={2} fill="url(#accentGradient)" name="Actual Spend" />
                 </AreaChart>
