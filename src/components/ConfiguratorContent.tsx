@@ -408,7 +408,7 @@ export default function ConfiguratorContent() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "rgba(255,255,255,0.9)",
+              background: "rgba(250,255,250,0.9)",
               backdropFilter: "blur(8px)",
             }}
             initial={{ opacity: 0 }}
@@ -749,7 +749,7 @@ export default function ConfiguratorContent() {
             justifyContent: "space-between",
             padding: "8px 16px",
             borderBottom: "1px solid var(--color-border)",
-            background: "#fff",
+            background: "var(--color-surface)",
           }}
         >
           <div
@@ -773,7 +773,7 @@ export default function ConfiguratorContent() {
                 fontWeight: 600,
                 border: "none",
                 cursor: "pointer",
-                background: viewMode === "2d" ? "#fff" : "transparent",
+                background: viewMode === "2d" ? "var(--color-surface)" : "transparent",
                 color:
                   viewMode === "2d"
                     ? "var(--color-text)"
@@ -796,7 +796,7 @@ export default function ConfiguratorContent() {
                 fontWeight: 600,
                 border: "none",
                 cursor: "pointer",
-                background: viewMode === "3d" ? "#fff" : "transparent",
+                background: viewMode === "3d" ? "var(--color-surface)" : "transparent",
                 color:
                   viewMode === "3d"
                     ? "var(--color-text)"
@@ -816,7 +816,7 @@ export default function ConfiguratorContent() {
                 padding: 8,
                 borderRadius: 8,
                 background: "var(--color-accent)",
-                color: "#fff",
+                color: "var(--color-bg)",
                 border: "none",
                 cursor: "pointer",
                 display: "flex",
@@ -988,7 +988,7 @@ export default function ConfiguratorContent() {
                 height: "100%",
                 maxWidth: 900,
                 maxHeight: 600,
-                background: "#fff",
+                background: "var(--color-surface)",
                 borderRadius: 20,
                 boxShadow: "var(--shadow-lg)",
                 overflow: "hidden",
@@ -1064,7 +1064,7 @@ export default function ConfiguratorContent() {
           ) : (
             <div
               style={{
-                background: "#fff",
+                background: "var(--color-surface)",
                 borderRadius: 16,
                 boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
                 border: "1px solid var(--color-border)",
@@ -1368,7 +1368,7 @@ export default function ConfiguratorContent() {
             gap: 12,
             padding: "8px 16px",
             borderTop: "1px solid var(--color-border)",
-            background: "#fff",
+            background: "var(--color-surface)",
             fontSize: 12,
             color: "var(--color-text-secondary)",
           }}

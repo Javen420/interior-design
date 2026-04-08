@@ -41,8 +41,8 @@ export default function ProjectDetailPage() {
         {/* Project Header Card */}
         <motion.div className="card" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 32, marginBottom: 32, padding: 0, overflow: 'hidden' }}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div style={{ background: 'linear-gradient(135deg, #3d3d5c, #1a1a2e)', height: '100%', minHeight: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ width: 80, height: 80, borderRadius: 16, background: 'rgba(196,162,101,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 700, color: 'var(--color-accent)' }}>🏠</div>
+          <div style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))', height: '100%', minHeight: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 80, height: 80, borderRadius: 16, background: 'rgba(247,255,247,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 700, color: 'var(--color-accent)' }}>🏠</div>
           </div>
           <div style={{ padding: 28 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
@@ -82,7 +82,7 @@ export default function ProjectDetailPage() {
                     border: `2px solid ${isCompleted || isActive ? 'var(--color-accent)' : 'var(--color-border)'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1
                   }}>
-                    {isCompleted ? <CheckCircle2 size={16} style={{ color: '#fff' }} /> : isActive ? <Clock size={16} style={{ color: '#fff' }} /> : <Circle size={12} style={{ color: 'var(--color-text-muted)' }} />}
+                    {isCompleted ? <CheckCircle2 size={16} style={{ color: 'var(--color-bg)' }} /> : isActive ? <Clock size={16} style={{ color: 'var(--color-bg)' }} /> : <Circle size={12} style={{ color: 'var(--color-text-muted)' }} />}
                   </div>
                   <div style={{ fontSize: 11, fontWeight: 600, marginTop: 8, color: isCompleted || isActive ? 'var(--color-text)' : 'var(--color-text-muted)', textTransform: 'uppercase' }}>{stage}</div>
                   {i < timelineStages.length - 1 && (
@@ -153,8 +153,8 @@ export default function ProjectDetailPage() {
           {[
             { icon: AlertTriangle, color: 'var(--color-warning)', bg: 'var(--color-warning-bg)', title: 'Weather Delay', desc: 'Outdoor patio prep delayed 24h' },
             { icon: CheckCircle2, color: 'var(--color-success)', bg: 'var(--color-success-bg)', title: 'Permit Approved', desc: 'Structural changes cleared' },
-            { icon: Info, color: 'var(--color-info)', bg: 'rgba(74,143,212,0.08)', title: 'New Document', desc: 'Lighting plan v3 uploaded' },
-            { icon: Mail, color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)', title: 'Message from Sarah', desc: 'Review selection samples' },
+            { icon: Info, color: 'var(--color-info)', bg: 'var(--color-info-bg)', title: 'New Document', desc: 'Lighting plan v3 uploaded' },
+            { icon: Mail, color: 'var(--color-primary-light)', bg: 'var(--color-accent-bg)', title: 'Message from Sarah', desc: 'Review selection samples' },
           ].map((alert, i) => (
             <motion.div key={alert.title} className="card" style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: 16 }}
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.05 }}>

@@ -132,7 +132,7 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
         max-camera-orbit="auto auto 20m"
         min-field-of-view="30deg"
         max-field-of-view="80deg"
-        style={{ width: "100%", height: "100%", background: "#f5f3f0" }}
+        style={{ width: "100%", height: "100%", background: "var(--color-surface-hover)" }}
       >
         <button
           slot="ar-button"
@@ -141,8 +141,8 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
             right: 16,
             bottom: 16,
             zIndex: 5,
-            background: "#111",
-            color: "white",
+            background: "var(--color-primary)",
+            color: "var(--color-bg)",
             border: "none",
             borderRadius: 10,
             padding: "10px 14px",
@@ -164,7 +164,7 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            background: "rgba(245,243,240,0.96)",
+            background: "rgba(250,255,250,0.96)",
             gap: 12,
             padding: 32,
             textAlign: "center",
@@ -411,9 +411,9 @@ export default function ARDemoPage() {
       <div
         style={{
           background:
-            "linear-gradient(135deg, var(--color-primary) 0%, #23233b 55%, #2b2b45 100%)",
-          color: "white",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+            "radial-gradient(circle at top right, rgba(20, 201, 123, 0.12), transparent 28%), linear-gradient(135deg, #16382d 0%, #1d4337 55%, #21493c 100%)",
+          color: "var(--color-bg)",
+          borderBottom: "1px solid rgba(248,255,248,0.08)",
         }}
       >
         <div
@@ -421,13 +421,22 @@ export default function ARDemoPage() {
           style={{ paddingTop: 48, paddingBottom: 48 }}
         >
           <div className="max-w-3xl">
-            <div className="chip chip-accent mb-4">AR Interior Viewer</div>
-            <h1 className="mb-4" style={{ color: "white", maxWidth: "12ch" }}>
+            <div
+              className="chip mb-4"
+              style={{
+                background: "rgba(248,255,248,0.12)",
+                border: "1px solid rgba(248,255,248,0.18)",
+                color: "rgba(248,255,248,0.92)",
+              }}
+            >
+              AR Interior Viewer
+            </div>
+            <h1 className="mb-4" style={{ color: "var(--color-bg)", maxWidth: "12ch" }}>
               Visualize your design in AR
             </h1>
             <p
               className="mb-6"
-              style={{ color: "rgba(255,255,255,0.78)", maxWidth: "720px" }}
+              style={{ color: "rgba(250,255,250,0.78)", maxWidth: "720px" }}
             >
               {design
                 ? `Your ${design.styleApplied} design is ready. Launch AR on a supported device to preview the layout in your own space.`
@@ -449,6 +458,11 @@ export default function ARDemoPage() {
               <a
                 href="/design/configurator"
                 className="btn-secondary no-underline"
+                style={{
+                  background: "transparent",
+                  color: "var(--color-bg)",
+                  borderColor: "rgba(248,255,248,0.28)",
+                }}
               >
                 Open 3D Configurator
               </a>
@@ -462,38 +476,6 @@ export default function ARDemoPage() {
         style={{ paddingTop: 48, paddingBottom: 48 }}
         id="demo"
       >
-        {/* No-design state */}
-        {!design && (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "64px 32px",
-              background: "var(--color-surface-hover)",
-              border: "1px solid var(--color-border)",
-              borderRadius: 20,
-              marginBottom: 32,
-            }}
-          >
-            <div style={{ fontSize: 48, marginBottom: 16 }}>🛋️</div>
-            <h2 style={{ marginBottom: 12 }}>No design yet</h2>
-            <p
-              style={{
-                color: "var(--color-text-secondary)",
-                maxWidth: 480,
-                margin: "0 auto 24px",
-                lineHeight: 1.6,
-              }}
-            >
-              Complete the design wizard to generate your apartment layout.
-              Once it's ready you can view it in 3D and launch it in AR on
-              supported devices.
-            </p>
-            <a href="/design/wizard" className="btn-primary no-underline">
-              Start Design Wizard
-            </a>
-          </div>
-        )}
-
         {/* Viewer */}
         <div className="mb-8">
           <div className="chip mb-4">LIVE 3D / AR PREVIEW</div>
@@ -510,7 +492,7 @@ export default function ARDemoPage() {
           className={isFullscreen ? "fixed inset-0 z-50 rounded-none" : "rounded-2xl"}
           style={{
             height: isFullscreen ? "100vh" : 600,
-            background: "#f5f3f0",
+            background: "var(--color-surface-hover)",
             border: "1px solid var(--color-border)",
             overflow: "hidden",
             boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
@@ -551,7 +533,7 @@ export default function ARDemoPage() {
             style={{
               padding: "10px 16px",
               background: "var(--color-accent)",
-              color: "white",
+              color: "var(--color-bg)",
               border: "none",
               borderRadius: "var(--radius)",
               cursor: "pointer",
@@ -622,10 +604,10 @@ export default function ARDemoPage() {
                 background: arStatusMsg.includes("started")
                   ? "var(--color-success-bg)"
                   : "var(--color-warning-bg)",
-                border: `1px solid ${arStatusMsg.includes("started") ? "rgba(45,159,91,0.2)" : "rgba(212,160,23,0.2)"}`,
+                border: "1px solid var(--color-border)",
                 borderRadius: 10,
                 fontSize: 14,
-                color: "var(--color-text-primary)",
+                color: "var(--color-text)",
               }}
             >
               {arStatusMsg}
@@ -642,7 +624,7 @@ export default function ARDemoPage() {
                 style={{
                   background: "var(--color-success-bg)",
                   color: "var(--color-success)",
-                  border: "1px solid rgba(45,159,91,0.2)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: 20,
                   padding: "2px 10px",
                   fontSize: 11,
@@ -785,7 +767,7 @@ export default function ARDemoPage() {
           className="card"
           style={{
             background: "var(--color-accent-bg)",
-            borderColor: "rgba(196, 162, 101, 0.22)",
+            borderColor: "var(--color-border)",
           }}
         >
           <h3 className="mb-4">How to Interact</h3>
@@ -841,7 +823,7 @@ export default function ARDemoPage() {
               className="card"
               style={{
                 background: "var(--color-success-bg)",
-                borderColor: "rgba(45, 159, 91, 0.18)",
+                borderColor: "var(--color-border)",
               }}
             >
               <div style={{ fontSize: 28, marginBottom: 12 }}>✓</div>
@@ -858,7 +840,7 @@ export default function ARDemoPage() {
               className="card"
               style={{
                 background: "var(--color-accent-bg)",
-                borderColor: "rgba(196, 162, 101, 0.22)",
+                borderColor: "var(--color-border)",
               }}
             >
               <div style={{ fontSize: 28, marginBottom: 12 }}>◉</div>
@@ -877,7 +859,7 @@ export default function ARDemoPage() {
               className="card"
               style={{
                 background: "var(--color-warning-bg)",
-                borderColor: "rgba(212, 160, 23, 0.18)",
+                borderColor: "var(--color-border)",
               }}
             >
               <div style={{ fontSize: 28, marginBottom: 12 }}>≡</div>

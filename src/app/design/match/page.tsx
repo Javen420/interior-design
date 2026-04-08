@@ -47,9 +47,9 @@ export default function DesignerMatchPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)' }}>
       {/* Hero Banner */}
-      <div style={{ background: 'linear-gradient(135deg, #2d2d44, #1a1a2e)', padding: '40px 0', color: '#fff' }}>
+      <div style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))', padding: '40px 0', color: 'var(--color-bg)' }}>
         <div className="container-main">
-          <div className="chip" style={{ background: 'rgba(196,162,101,0.2)', border: 'none', color: 'var(--color-accent)', marginBottom: 12, fontSize: 11, fontWeight: 700, letterSpacing: '0.05em' }}>ACTIVE SEARCH</div>
+          <div className="chip" style={{ background: 'rgba(247,255,247,0.14)', border: '1px solid rgba(247,255,247,0.22)', color: 'var(--color-bg)', marginBottom: 12, fontSize: 11, fontWeight: 700, letterSpacing: '0.05em' }}>ACTIVE SEARCH</div>
           <h1 style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.3 }}>
             Based on your {savedDesign.design.styleApplied} design<br />
             for a {savedDesign.preferences.flatType.replace(/-/g,' ').replace('bto','BTO').replace('hdb','HDB')} — <span style={{ color: 'var(--color-accent)' }}>SGD ${totalCost.toLocaleString()}</span>
@@ -58,7 +58,7 @@ export default function DesignerMatchPage() {
       </div>
 
       {/* Filters */}
-      <div style={{ borderBottom: '1px solid var(--color-border)', background: '#fff' }}>
+      <div style={{ borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)' }}>
         <div className="container-main" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px' }}>
           {savedDesign.preferences.styles.map(s => <span key={s} className="chip">{s}</span>)}
           <span className="chip">${(savedDesign.preferences.budgetMin / 1000).toFixed(0)}k – ${(savedDesign.preferences.budgetMax / 1000).toFixed(0)}k</span>
@@ -87,15 +87,15 @@ export default function DesignerMatchPage() {
                 {/* Left: Avatar + info */}
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ position: 'relative', display: 'inline-block', marginBottom: 12 }}>
-                    <div style={{ width: 80, height: 80, borderRadius: '50%', background: `linear-gradient(135deg, ${['#e8d5b8','#b8c9d8','#c8d8b8'][i]}, ${['#d4b896','#8ba4b8','#a4b89a'][i]})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 700, color: '#fff' }}>
+                    <div style={{ width: 80, height: 80, borderRadius: '50%', background: `linear-gradient(135deg, ${i % 2 === 0 ? '#1F6B4F' : '#2E8B68'}, ${i % 2 === 0 ? '#2E8B68' : '#1F6B4F'})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 700, color: '#F7FFF7' }}>
                       {d.name.split(' ').map(n => n[0]).join('')}
                     </div>
-                    <div style={{ position: 'absolute', bottom: -4, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-accent)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 10px', borderRadius: 10 }}>{d.matchScore}%</div>
+                    <div style={{ position: 'absolute', bottom: -4, left: '50%', transform: 'translateX(-50%)', background: 'var(--color-accent)', color: 'var(--color-bg)', fontSize: 11, fontWeight: 700, padding: '2px 10px', borderRadius: 10 }}>{d.matchScore}%</div>
                   </div>
                   <div style={{ fontWeight: 700, fontSize: 16 }}>{d.name}</div>
                   <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.03em', color: 'var(--color-text-secondary)', textTransform: 'uppercase', marginBottom: 4 }}>{d.title}</div>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 4, marginBottom: 12 }}>
-                    {Array.from({ length: 5 }).map((_, si) => <Star key={si} size={12} fill={si < Math.floor(d.rating) ? '#c4a265' : 'none'} style={{ color: '#c4a265' }} />)}
+                    {Array.from({ length: 5 }).map((_, si) => <Star key={si} size={12} fill={si < Math.floor(d.rating) ? '#2E8B68' : 'none'} style={{ color: '#2E8B68' }} />)}
                     <span style={{ fontSize: 13, fontWeight: 600, marginLeft: 4 }}>{d.rating}</span>
                   </div>
                   <button className="btn-primary" style={{ width: '100%', justifyContent: 'center', fontSize: 13, padding: '10px 16px', marginBottom: 6 }}>

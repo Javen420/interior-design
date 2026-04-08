@@ -48,15 +48,15 @@ export function createFurnitureBox(
 
   // Determine color from item.color (name) or use default
   const colorMap: Record<string, number> = {
-    beige: 0xf5e6d3,
-    brown: 0x8b7355,
-    white: 0xffffff,
-    black: 0x333333,
-    gray: 0x808080,
-    blue: 0x4a8fd4,
-    green: 0x2d5f4e,
-    orange: 0xd4763c,
-    default: 0xc4a265,
+    beige: 0xddf7e8,
+    brown: 0x1f6b4f,
+    white: 0xf7fff7,
+    black: 0x111111,
+    gray: 0x2e8b68,
+    blue: 0x2e8b68,
+    green: 0x2e8b68,
+    orange: 0x2e8b68,
+    default: 0x2e8b68,
   };
 
   const colorHex =
@@ -96,7 +96,7 @@ export function createRoomGeometry(roomType: RoomType): THREE.Group {
   // Floor
   const floorGeometry = new THREE.PlaneGeometry(dims.width, dims.length);
   const floorMaterial = new THREE.MeshStandardMaterial({
-    color: 0xf5f5f5,
+    color: 0xddf7e8,
     roughness: 0.3,
     metalness: 0,
   });
@@ -108,7 +108,7 @@ export function createRoomGeometry(roomType: RoomType): THREE.Group {
   // Ceiling
   const ceilingGeometry = new THREE.PlaneGeometry(dims.width, dims.length);
   const ceilingMaterial = new THREE.MeshStandardMaterial({
-    color: 0xfafafa,
+    color: 0xf7fff7,
     roughness: 0.5,
     metalness: 0,
   });
@@ -119,7 +119,7 @@ export function createRoomGeometry(roomType: RoomType): THREE.Group {
 
   // Walls
   const wallMaterial = new THREE.MeshStandardMaterial({
-    color: 0xf8f6f2,
+    color: 0xf7fff7,
     roughness: 0.4,
     metalness: 0,
   });
@@ -165,8 +165,8 @@ export function createRoomGeometry(roomType: RoomType): THREE.Group {
   const gridHelper = new THREE.GridHelper(
     Math.max(dims.width, dims.length),
     8,
-    0xcccccc,
-    0xeeeeee,
+    0x1f6b4f,
+    0xddf7e8,
   );
   gridHelper.position.y = 0.01;
   group.add(gridHelper);
@@ -235,40 +235,40 @@ export function createFurniture(style: string): THREE.Group {
 export function getColorForStyle(style: string, element: string): number {
   const styles: Record<string, Record<string, number>> = {
     scandinavian: {
-      furniture: 0xf5e6d3,
-      accent: 0xd4b896,
-      lamp: 0x8b7355,
-      shade: 0xf5e6d3,
+      furniture: 0xddf7e8,
+      accent: 0x2e8b68,
+      lamp: 0x1f6b4f,
+      shade: 0xf7fff7,
     },
     minimalist: {
-      furniture: 0xffffff,
-      accent: 0x333333,
-      lamp: 0x666666,
-      shade: 0xf0f0f0,
+      furniture: 0xf7fff7,
+      accent: 0x111111,
+      lamp: 0x1f6b4f,
+      shade: 0xddf7e8,
     },
     industrial: {
-      furniture: 0x4a4a4a,
-      accent: 0x8b7355,
-      lamp: 0x2a2a2a,
-      shade: 0x666666,
+      furniture: 0x1f6b4f,
+      accent: 0x2e8b68,
+      lamp: 0x111111,
+      shade: 0xddf7e8,
     },
     japandi: {
-      furniture: 0xf7f3ed,
-      accent: 0xc8b89a,
-      lamp: 0x8b7f6f,
-      shade: 0xf7f3ed,
+      furniture: 0xf7fff7,
+      accent: 0x2e8b68,
+      lamp: 0x1f6b4f,
+      shade: 0xddf7e8,
     },
     "mid-century-modern": {
-      furniture: 0xd4763c,
-      accent: 0x2d5f4e,
-      lamp: 0xd4763c,
-      shade: 0xf5e6d3,
+      furniture: 0x2e8b68,
+      accent: 0x1f6b4f,
+      lamp: 0x2e8b68,
+      shade: 0xddf7e8,
     },
     contemporary: {
-      furniture: 0x1a1a2e,
-      accent: 0xd4a574,
-      lamp: 0x333333,
-      shade: 0xd4a574,
+      furniture: 0x111111,
+      accent: 0x2e8b68,
+      lamp: 0x1f6b4f,
+      shade: 0xddf7e8,
     },
   };
 
@@ -291,7 +291,7 @@ export function updateRoomMaterialsByStyle(
         child.geometry instanceof THREE.PlaneGeometry &&
         child.position.y === 0
       ) {
-        child.material.color.setHex(0xf5f5f5);
+        child.material.color.setHex(0xddf7e8);
       }
     }
   });

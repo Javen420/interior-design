@@ -76,7 +76,7 @@ export default function Navbar() {
                     fontFamily: "var(--font-body)",
                     fontWeight: 600,
                     background: active ? "var(--color-accent)" : "transparent",
-                    color: active ? "#fff" : "var(--color-text-secondary)",
+                    color: active ? "var(--color-bg)" : "var(--color-text-secondary)",
                     transition: "all 0.2s ease",
                     display: "flex",
                     alignItems: "center",

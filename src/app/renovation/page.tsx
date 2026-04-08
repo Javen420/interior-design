@@ -22,7 +22,7 @@ interface Project {
 
 const timelineStages = ['Design', 'Procurement', 'Demolition', 'Carpentry', 'Electrical', 'Painting', 'Styling', 'Handover'];
 
-const photoColors = ['#e8e4de', '#d4e8d0', '#dde4f0', '#f0e6d0', '#e4dde8', '#d0e8e4'];
+const photoColors = ['#DDF7E8', '#F7FFF7', '#DDF7E8', '#F7FFF7', '#DDF7E8', '#F7FFF7'];
 
 function getMilestoneLabel(date: string, milestones: Project['milestones']): string | null {
   for (const m of milestones) {
@@ -85,8 +85,8 @@ export default function RenovationPage() {
         {/* Project Hero Card */}
         <motion.div className="card" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 32, marginBottom: 32, padding: 0, overflow: 'hidden' }}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div style={{ background: 'linear-gradient(135deg, #3d3d5c, #1a1a2e)', height: '100%', minHeight: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ width: 80, height: 80, borderRadius: 16, background: 'rgba(196,162,101,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>🏠</div>
+          <div style={{ background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))', height: '100%', minHeight: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 80, height: 80, borderRadius: 16, background: 'rgba(247,255,247,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>🏠</div>
           </div>
           <div style={{ padding: 28 }}>
             <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 4 }}>Your Renovation Journey</h1>
@@ -121,7 +121,7 @@ export default function RenovationPage() {
                     border: `2px solid ${isCompleted || isActive ? 'var(--color-accent)' : 'var(--color-border)'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1
                   }}>
-                    {isCompleted ? <CheckCircle2 size={16} style={{ color: '#fff' }} /> : isActive ? <Clock size={16} style={{ color: '#fff' }} /> : <Circle size={12} style={{ color: 'var(--color-text-muted)' }} />}
+                    {isCompleted ? <CheckCircle2 size={16} style={{ color: 'var(--color-bg)' }} /> : isActive ? <Clock size={16} style={{ color: 'var(--color-bg)' }} /> : <Circle size={12} style={{ color: 'var(--color-text-muted)' }} />}
                   </div>
                   <div style={{ fontSize: 11, fontWeight: 600, marginTop: 8, color: isCompleted || isActive ? 'var(--color-text)' : 'var(--color-text-muted)', textTransform: 'uppercase' }}>{stage}</div>
                   {i < timelineStages.length - 1 && (
@@ -203,16 +203,16 @@ export default function RenovationPage() {
                 <AreaChart data={spendData}>
                   <defs>
                     <linearGradient id="accentGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#c4a265" stopOpacity={0.15} />
-                      <stop offset="95%" stopColor="#c4a265" stopOpacity={0.02} />
+                      <stop offset="5%" stopColor="#2E8B68" stopOpacity={0.18} />
+                      <stop offset="95%" stopColor="#2E8B68" stopOpacity={0.03} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border-light)" />
                   <XAxis dataKey="date" tick={{ fill: 'var(--color-text-secondary)', fontSize: 11 }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fill: 'var(--color-text-secondary)', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`} />
-                  <Tooltip contentStyle={{ background: '#fff', border: '1px solid var(--color-border)', borderRadius: 12, color: 'var(--color-text)' }} formatter={(value: number) => [`$${value.toLocaleString()}`, '']} />
+                  <Tooltip contentStyle={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, color: 'var(--color-text)' }} formatter={(value: number) => [`$${value.toLocaleString()}`, '']} />
                   <ReferenceLine y={totalEstimated} stroke="var(--color-border)" strokeDasharray="6 4" label={{ value: 'Estimated', position: 'right', fill: 'var(--color-text-muted)', fontSize: 11 }} />
-                  <Area type="monotone" dataKey="actual" stroke="#c4a265" strokeWidth={2} fill="url(#accentGradient)" name="Actual Spend" />
+                  <Area type="monotone" dataKey="actual" stroke="#2E8B68" strokeWidth={2} fill="url(#accentGradient)" name="Actual Spend" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -263,7 +263,7 @@ export default function RenovationPage() {
           <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>Quick Actions</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
             {[
-              { icon: Mail, color: '#8b5cf6', bg: 'rgba(139,92,246,0.08)', title: 'Message Designer', desc: 'Send a note to Sarah' },
+              { icon: Mail, color: 'var(--color-primary-light)', bg: 'var(--color-accent-bg)', title: 'Message Designer', desc: 'Send a note to Sarah' },
               { icon: FileText, color: 'var(--color-info)', bg: 'var(--color-info-bg)', title: 'View Documents', desc: 'Plans, invoices & more' },
               { icon: Calendar, color: 'var(--color-accent)', bg: 'var(--color-accent-bg)', title: 'Schedule Visit', desc: 'Book a site visit' },
               { icon: AlertTriangle, color: 'var(--color-warning)', bg: 'var(--color-warning-bg)', title: 'Report Issue', desc: 'Flag a concern' },

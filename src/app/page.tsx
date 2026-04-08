@@ -39,7 +39,8 @@ export default function HomePage() {
       {/* Hero */}
       <section
         style={{
-          background: "var(--color-bg)",
+          background:
+            "radial-gradient(circle at 15% 20%, rgba(20, 201, 123, 0.12), transparent 24%), radial-gradient(circle at 85% 18%, rgba(18, 183, 106, 0.1), transparent 20%), linear-gradient(180deg, #fbfffc 0%, #f3fff7 100%)",
           paddingTop: 60,
           paddingBottom: 80,
         }}
@@ -71,7 +72,7 @@ export default function HomePage() {
             <p
               style={{
                 fontSize: 17,
-                color: "var(--color-text-secondary)",
+                color: "#244f3f",
                 lineHeight: 1.7,
                 marginBottom: 32,
                 maxWidth: 440,
@@ -118,8 +119,8 @@ export default function HomePage() {
               className="card"
               style={{
                 padding: 20,
-                background: "#fff",
-                boxShadow: "0 12px 40px rgba(0,0,0,0.08)",
+                background: "var(--color-surface)",
+                boxShadow: "0 20px 54px rgba(15,106,76,0.14)",
                 borderRadius: 20,
                 border: "1px solid var(--color-border-light)",
               }}
@@ -137,7 +138,7 @@ export default function HomePage() {
                     width: 10,
                     height: 10,
                     borderRadius: "50%",
-                    background: "#f87171",
+                    background: "#ff6b6b",
                   }}
                 />
                 <div
@@ -145,7 +146,7 @@ export default function HomePage() {
                     width: 10,
                     height: 10,
                     borderRadius: "50%",
-                    background: "#fbbf24",
+                    background: "#ffd93d",
                   }}
                 />
                 <div
@@ -153,7 +154,7 @@ export default function HomePage() {
                     width: 10,
                     height: 10,
                     borderRadius: "50%",
-                    background: "#4ade80",
+                    background: "var(--color-accent)",
                   }}
                 />
                 <span
@@ -211,11 +212,12 @@ export default function HomePage() {
                 </div>
                 <div
                   style={{
-                    background: "#1a1a2e",
+                    background: "var(--color-primary)",
                     borderRadius: 12,
                     padding: 16,
                     position: "relative",
                     overflow: "hidden",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
                   }}
                 >
                   <div
@@ -224,7 +226,7 @@ export default function HomePage() {
                       top: 8,
                       right: 8,
                       background: "var(--color-accent)",
-                      color: "#fff",
+                      color: "#0b2b1f",
                       fontSize: 9,
                       padding: "3px 8px",
                       borderRadius: 6,
@@ -235,12 +237,12 @@ export default function HomePage() {
                   </div>
                   <div style={{ marginTop: 30, textAlign: "right" }}>
                     <div
-                      style={{ fontSize: 10, color: "rgba(255,255,255,0.6)" }}
+                      style={{ fontSize: 10, color: "rgba(248,255,248,0.82)" }}
                     >
                       Total Estimate
                     </div>
                     <div
-                      style={{ fontSize: 18, fontWeight: 700, color: "#fff" }}
+                      style={{ fontSize: 18, fontWeight: 700, color: "var(--color-bg)" }}
                     >
                       $32,450.00
                     </div>
@@ -254,9 +256,10 @@ export default function HomePage() {
                   gap: 8,
                   marginTop: 14,
                   padding: "8px 14px",
-                  background: "var(--color-accent-bg)",
-                  borderRadius: 10,
-                }}
+                background: "var(--color-accent-bg)",
+                border: "1px solid rgba(20, 201, 123, 0.18)",
+                borderRadius: 10,
+              }}
               >
                 <span style={{ fontSize: 16 }}>⚡</span>
                 <div>
@@ -287,7 +290,8 @@ export default function HomePage() {
       {/* How It Works */}
       <section
         style={{
-          background: "var(--color-bg-alt)",
+          background:
+            "linear-gradient(180deg, rgba(20, 201, 123, 0.08) 0%, rgba(18, 183, 106, 0.04) 100%)",
           paddingTop: 80,
           paddingBottom: 80,
         }}
@@ -317,7 +321,7 @@ export default function HomePage() {
               <motion.div
                 key={step.title}
                 className="card"
-                style={{ textAlign: "left" }}
+                style={{ textAlign: "left", background: "rgba(255,255,255,0.92)" }}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -514,7 +518,7 @@ export default function HomePage() {
                   height: 28,
                   borderRadius: 8,
                   background: "var(--color-accent)",
-                  color: "#fff",
+                  color: "var(--color-bg)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
