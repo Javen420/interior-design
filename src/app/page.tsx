@@ -106,7 +106,7 @@ export default function HomePage() {
                 className="btn-secondary"
                 style={{ textDecoration: "none", fontSize: 15 }}
               >
-                <Sparkles size={16} /> Watch AR Demo
+                <Sparkles size={16} /> Generate Mockup
               </Link>
             </div>
           </motion.div>

@@ -12,6 +12,40 @@ interface MatchedDesigner {
   bio: string; rating: number; matchScore: number; reasons: string[];
 }
 
+const styleImageMap: Record<string, string> = {
+  contemporary: '/images/styles/contemporary.png',
+  industrial: '/images/styles/industrial.png',
+  japandi: '/images/styles/japandi.png',
+  minimalist: '/images/styles/minimalist.png',
+  scandinavian: '/images/styles/scandinavian.png',
+  'mid-century-modern': '/images/styles/mid-century-modern.png',
+  'mid century modern': '/images/styles/mid-century-modern.png',
+};
+
+function normalizeStyleKey(value: string) {
+  return value.toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+}
+
+function getRecentProjectTiles(designer: MatchedDesigner, fallbackStyle: string) {
+  const styleCandidates = [
+    ...designer.specializations,
+    ...designer.projectTypes,
+    fallbackStyle,
+    'contemporary',
+    'minimalist',
+  ];
+
+  const uniqueStyles = Array.from(new Set(styleCandidates.map(normalizeStyleKey)))
+    .map((style) => ({ style, image: styleImageMap[style] }))
+    .filter((item): item is { style: string; image: string } => Boolean(item.image));
+
+  return uniqueStyles.slice(0, 2).map((item, index) => ({
+    image: item.image,
+    label: index === 0 ? 'Living Room' : 'Kitchen',
+    style: item.style.replace(/\b\w/g, (char) => char.toUpperCase()),
+  }));
+}
+
 export default function DesignerMatchPage() {
   const router = useRouter();
   const { savedDesign } = useDesignStore();
@@ -81,9 +115,12 @@ export default function DesignerMatchPage() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {designers.map((d, i) => (
-              <motion.div key={d.id} className="card" style={{ display: 'grid', gridTemplateColumns: '180px 1fr 260px', gap: 32, padding: 28 }}
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.12 }}>
+            {designers.map((d, i) => {
+              const recentProjects = getRecentProjectTiles(d, savedDesign.design.styleApplied);
+
+              return (
+                <motion.div key={d.id} className="card" style={{ display: 'grid', gridTemplateColumns: '180px 1fr 260px', gap: 32, padding: 28 }}
+                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.12 }}>
                 {/* Left: Avatar + info */}
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ position: 'relative', display: 'inline-block', marginBottom: 12 }}>
@@ -125,8 +162,30 @@ export default function DesignerMatchPage() {
                 <div>
                   <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.05em', color: 'var(--color-text-secondary)', marginBottom: 12 }}>RECENT PROJECTS</div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 16 }}>
-                    <div style={{ background: 'var(--color-bg)', borderRadius: 12, height: 80 }} />
-                    <div style={{ background: 'var(--color-bg)', borderRadius: 12, height: 80 }} />
+                    {recentProjects.map((project) => (
+                      <div
+                        key={`${d.id}-${project.label}-${project.style}`}
+                        style={{
+                          position: 'relative',
+                          borderRadius: 12,
+                          height: 80,
+                          overflow: 'hidden',
+                          backgroundColor: 'var(--color-bg)',
+                          backgroundImage: `linear-gradient(180deg, rgba(10, 25, 20, 0.06) 0%, rgba(10, 25, 20, 0.45) 100%), url(${project.image})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                        }}
+                      >
+                        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 10 }}>
+                          <span style={{ alignSelf: 'flex-start', fontSize: 10, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--color-bg)', background: 'rgba(10, 25, 20, 0.45)', padding: '4px 8px', borderRadius: 999 }}>
+                            {project.label}
+                          </span>
+                          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-bg)', textShadow: '0 1px 2px rgba(0,0,0,0.35)' }}>
+                            {project.style}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
                     <div style={{ textAlign: 'center' }}>
@@ -143,8 +202,9 @@ export default function DesignerMatchPage() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         )}
 

@@ -7,7 +7,10 @@ import { useDesignStore } from "@/store/designStore";
 
 // Dynamically imported — uses WebXR + Three.js Canvas, must be client-only
 const ARWalkthrough = dynamic(
-  () => import("@/components/ARWalkthrough").then((m) => ({ default: m.ARWalkthrough })),
+  () =>
+    import("@/components/ARWalkthrough").then((m) => ({
+      default: m.ARWalkthrough,
+    })),
   { ssr: false },
 );
 
@@ -94,7 +97,11 @@ interface ViewerContentProps {
   viewerRef: React.RefObject<ModelViewerElement | null>;
 }
 
-function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProps) {
+function ViewerContent({
+  viewerReady,
+  modelError,
+  viewerRef,
+}: ViewerContentProps) {
   if (!viewerReady) {
     return (
       <div style={centreStyle}>
@@ -132,7 +139,11 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
         max-camera-orbit="auto auto 20m"
         min-field-of-view="30deg"
         max-field-of-view="80deg"
-        style={{ width: "100%", height: "100%", background: "var(--color-surface-hover)" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "var(--color-surface-hover)",
+        }}
       >
         <button
           slot="ar-button"
@@ -180,10 +191,9 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
               margin: 0,
             }}
           >
-            The AR viewer needs a pre-baked{" "}
-            <code>apartment.glb</code> file to display the model. Until then,
-            the 3D configurator tab gives you a fully interactive view of your
-            design.
+            The AR viewer needs a pre-baked <code>apartment.glb</code> file to
+            display the model. Until then, the 3D configurator tab gives you a
+            fully interactive view of your design.
           </p>
           <div
             style={{
@@ -205,7 +215,9 @@ function ViewerContent({ viewerReady, modelError, viewerRef }: ViewerContentProp
                 lineHeight: 2,
               }}
             >
-              <li>Export a GLB from the 3D viewer (GLTFExporter — coming soon)</li>
+              <li>
+                Export a GLB from the 3D viewer (GLTFExporter — coming soon)
+              </li>
               <li>
                 Place it at <code>public/models/apartment.glb</code>
               </li>
@@ -236,12 +248,12 @@ export default function ARDemoPage() {
 
   // Use canvasItems for item count and cost — they reflect user edits
   // (drag, add, remove) made in the configurator after generation.
-  const itemCount = canvasItems.length > 0
-    ? canvasItems.length
-    : design?.items.length ?? 0;
-  const totalCost = canvasItems.length > 0
-    ? canvasItems.reduce((s, i) => s + i.price, 0)
-    : design?.totalCost ?? 0;
+  const itemCount =
+    canvasItems.length > 0 ? canvasItems.length : (design?.items.length ?? 0);
+  const totalCost =
+    canvasItems.length > 0
+      ? canvasItems.reduce((s, i) => s + i.price, 0)
+      : (design?.totalCost ?? 0);
 
   const roomArea = useMemo(() => {
     if (!design) return null;
@@ -429,29 +441,29 @@ export default function ARDemoPage() {
                 color: "rgba(248,255,248,0.92)",
               }}
             >
-              AR Interior Viewer
+              ROOM MOCKUP
             </div>
-            <h1 className="mb-4" style={{ color: "var(--color-bg)", maxWidth: "12ch" }}>
-              Visualize your design in AR
+            <h1
+              className="mb-4"
+              style={{ color: "var(--color-bg)", maxWidth: "12ch" }}
+            >
+              Generate your room mockup
             </h1>
             <p
               className="mb-6"
               style={{ color: "rgba(250,255,250,0.78)", maxWidth: "720px" }}
             >
               {design
-                ? `Your ${design.styleApplied} design is ready. Launch AR on a supported device to preview the layout in your own space.`
-                : "Generate a design in the configurator first, then return here to view it in AR."}
+                ? `Your ${design.styleApplied} design is ready. Open the mockup on a supported device to preview the layout in your own space.`
+                : "Generate a design in the configurator first, then return here to create your mockup."}
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               {design ? (
                 <a href="#demo" className="btn-primary no-underline">
-                  View in AR
+                  Open Mockup
                 </a>
               ) : (
-                <a
-                  href="/design/wizard"
-                  className="btn-primary no-underline"
-                >
+                <a href="/design/wizard" className="btn-primary no-underline">
                   Create Your Design
                 </a>
               )}
@@ -478,18 +490,20 @@ export default function ARDemoPage() {
       >
         {/* Viewer */}
         <div className="mb-8">
-          <div className="chip mb-4">LIVE 3D / AR PREVIEW</div>
-          <h2 className="mb-2">Interactive Room Visualization</h2>
+          <div className="chip mb-4">LIVE ROOM MOCKUP</div>
+          <h2 className="mb-2">Interactive Room Preview</h2>
           <p style={{ color: "var(--color-text-secondary)", maxWidth: 720 }}>
             {design
-              ? `Explore your ${design.styleApplied} apartment in 3D. On a supported mobile device the "View in AR" button places the model in your physical space.`
+              ? `Explore your ${design.styleApplied} apartment in 3D. On a supported mobile device, the mockup can also be placed in your physical space.`
               : "Your design will appear here once generated."}
           </p>
         </div>
 
         <div
           ref={containerRef}
-          className={isFullscreen ? "fixed inset-0 z-50 rounded-none" : "rounded-2xl"}
+          className={
+            isFullscreen ? "fixed inset-0 z-50 rounded-none" : "rounded-2xl"
+          }
           style={{
             height: isFullscreen ? "100vh" : 600,
             background: "var(--color-surface-hover)",
@@ -509,7 +523,12 @@ export default function ARDemoPage() {
 
         {/* Camera controls */}
         <div
-          style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 32 }}
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 12,
+            marginBottom: 32,
+          }}
         >
           {[
             { label: "Rotate Left", fn: rotateLeft },
@@ -559,17 +578,23 @@ export default function ARDemoPage() {
               <small style={{ color: "var(--color-text-muted)" }}>STATUS</small>
               <div
                 className="mt-2 font-semibold"
-                style={{ color: modelError ? "var(--color-danger)" : undefined }}
+                style={{
+                  color: modelError ? "var(--color-danger)" : undefined,
+                }}
               >
                 {status}
               </div>
             </div>
             <div>
-              <small style={{ color: "var(--color-text-muted)" }}>LOAD TIME</small>
+              <small style={{ color: "var(--color-text-muted)" }}>
+                LOAD TIME
+              </small>
               <div className="mt-2 font-semibold">{loadTime}</div>
             </div>
             <div>
-              <small style={{ color: "var(--color-text-muted)" }}>AR SUPPORT</small>
+              <small style={{ color: "var(--color-text-muted)" }}>
+                AR SUPPORT
+              </small>
               <div
                 className="mt-2 font-semibold"
                 style={{
@@ -586,12 +611,6 @@ export default function ARDemoPage() {
                   : arSupported
                     ? "Available"
                     : "Not available on this device/browser"}
-              </div>
-            </div>
-            <div>
-              <small style={{ color: "var(--color-text-muted)" }}>CAMERA ORBIT</small>
-              <div className="mt-2 font-semibold" style={{ wordBreak: "break-word" }}>
-                {orbitReadout}
               </div>
             </div>
           </div>
@@ -618,7 +637,14 @@ export default function ARDemoPage() {
         {/* ── AR Walkthrough ──────────────────────────────────────────────── */}
         {design && (
           <div className="mb-8">
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: 8,
+              }}
+            >
               <div className="chip mb-0">AR WALKTHROUGH</div>
               <span
                 style={{
@@ -636,9 +662,16 @@ export default function ARDemoPage() {
               </span>
             </div>
             <h2 className="mb-2">Walk Through Your Room in AR</h2>
-            <p style={{ color: "var(--color-text-secondary)", maxWidth: 680, marginBottom: 20 }}>
-              Place your virtual room in your real space and physically walk around it at 1:1 scale.
-              Requires a supported mobile device — point at the floor and tap to anchor.
+            <p
+              style={{
+                color: "var(--color-text-secondary)",
+                maxWidth: 680,
+                marginBottom: 20,
+              }}
+            >
+              Place your virtual room in your real space and physically walk
+              around it at 1:1 scale. Requires a supported mobile device — point
+              at the floor and tap to anchor.
             </p>
             <ARWalkthrough design={design} />
           </div>
@@ -649,28 +682,40 @@ export default function ARDemoPage() {
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <div className="card">
-                <small style={{ color: "var(--color-text-muted)" }}>DESIGN STYLE</small>
-                <div className="mt-3 font-semibold text-lg">{design.styleApplied}</div>
+                <small style={{ color: "var(--color-text-muted)" }}>
+                  DESIGN STYLE
+                </small>
+                <div className="mt-3 font-semibold text-lg">
+                  {design.styleApplied}
+                </div>
               </div>
               <div className="card">
-                <small style={{ color: "var(--color-text-muted)" }}>TOTAL BUDGET</small>
+                <small style={{ color: "var(--color-text-muted)" }}>
+                  TOTAL BUDGET
+                </small>
                 <div className="mt-3 font-semibold text-lg">
                   ${totalCost.toLocaleString()}
                 </div>
               </div>
               <div className="card">
-                <small style={{ color: "var(--color-text-muted)" }}>ROOM SIZE</small>
+                <small style={{ color: "var(--color-text-muted)" }}>
+                  ROOM SIZE
+                </small>
                 <div className="mt-3 font-semibold text-lg">
                   {design.room.width}m × {design.room.length}m
                   {roomArea && (
-                    <span style={{ fontWeight: 400, fontSize: 13, marginLeft: 4 }}>
+                    <span
+                      style={{ fontWeight: 400, fontSize: 13, marginLeft: 4 }}
+                    >
                       ({roomArea}m²)
                     </span>
                   )}
                 </div>
               </div>
               <div className="card">
-                <small style={{ color: "var(--color-text-muted)" }}>FURNITURE</small>
+                <small style={{ color: "var(--color-text-muted)" }}>
+                  FURNITURE
+                </small>
                 <div className="mt-3 font-semibold text-lg">
                   {itemCount} {itemCount === 1 ? "piece" : "pieces"}
                 </div>
@@ -690,7 +735,10 @@ export default function ARDemoPage() {
                     ["Style", design.styleApplied],
                     ["Room", `${design.room.width}m × ${design.room.length}m`],
                     ["Total cost", `$${totalCost.toLocaleString()}`],
-                    ["Avg item cost", `$${design.averageCost.toLocaleString()}`],
+                    [
+                      "Avg item cost",
+                      `$${design.averageCost.toLocaleString()}`,
+                    ],
                     ["Furniture pieces", String(itemCount)],
                     [
                       "Spaces",
@@ -779,100 +827,29 @@ export default function ARDemoPage() {
             }}
           >
             {[
-              ["🔄 Rotate", "Drag or use the rotate buttons to inspect the space"],
+              [
+                "🔄 Rotate",
+                "Drag or use the rotate buttons to inspect the space",
+              ],
               ["🔍 Zoom", "Scroll or pinch to zoom in and out"],
               [
                 "📱 AR",
-                "On a supported Android or iOS device, tap \"View in AR\" to place the model in your room",
+                'On a supported Android or iOS device, tap "View in AR" to place the model in your room',
               ],
-              ["⇗ Fullscreen", "Expand the viewer for a more immersive preview"],
+              [
+                "⇗ Fullscreen",
+                "Expand the viewer for a more immersive preview",
+              ],
             ].map(([title, desc]) => (
               <div key={title as string}>
                 <div style={{ fontWeight: 600, marginBottom: 4 }}>{title}</div>
-                <p style={{ color: "var(--color-text-secondary)", fontSize: 14 }}>
+                <p
+                  style={{ color: "var(--color-text-secondary)", fontSize: 14 }}
+                >
                   {desc}
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Features strip */}
-      <div
-        style={{
-          borderTop: "1px solid var(--color-border)",
-          background: "var(--color-bg-alt)",
-        }}
-      >
-        <div
-          className="container-main"
-          style={{ paddingTop: 48, paddingBottom: 48 }}
-        >
-          <div className="mb-8">
-            <div className="chip mb-4">FEATURES</div>
-            <h2 className="mb-2">AR Capabilities</h2>
-            <p style={{ color: "var(--color-text-secondary)", maxWidth: 680 }}>
-              View your apartment design in augmented reality directly in your
-              physical space on any ARCore (Android) or ARKit (iOS) device.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div
-              className="card"
-              style={{
-                background: "var(--color-success-bg)",
-                borderColor: "var(--color-border)",
-              }}
-            >
-              <div style={{ fontSize: 28, marginBottom: 12 }}>✓</div>
-              <h3 className="mb-3" style={{ color: "var(--color-success)" }}>
-                Android AR
-              </h3>
-              <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
-                Uses WebXR or Google Scene Viewer to place the full apartment
-                model in your real environment.
-              </p>
-            </div>
-
-            <div
-              className="card"
-              style={{
-                background: "var(--color-accent-bg)",
-                borderColor: "var(--color-border)",
-              }}
-            >
-              <div style={{ fontSize: 28, marginBottom: 12 }}>◉</div>
-              <h3 className="mb-3" style={{ color: "var(--color-accent)" }}>
-                iOS Quick Look
-              </h3>
-              <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
-                Provide a <code>.usdz</code> file at{" "}
-                <code>public/models/apartment.usdz</code> and add{" "}
-                <code>ios-src</code> to <code>{"<model-viewer>"}</code> for
-                native Safari AR.
-              </p>
-            </div>
-
-            <div
-              className="card"
-              style={{
-                background: "var(--color-warning-bg)",
-                borderColor: "var(--color-border)",
-              }}
-            >
-              <div style={{ fontSize: 28, marginBottom: 12 }}>≡</div>
-              <h3 className="mb-3" style={{ color: "var(--color-warning)" }}>
-                Dynamic Export
-              </h3>
-              <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
-                The next step is wiring Three.js{" "}
-                <code>GLTFExporter</code> to the R3F scene in{" "}
-                <code>ARViewer.tsx</code> so the live apartment is
-                exported to GLB on demand.
-              </p>
-            </div>
           </div>
         </div>
       </div>

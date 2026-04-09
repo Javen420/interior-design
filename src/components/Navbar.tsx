@@ -17,7 +17,7 @@ const homeownerItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/design/wizard", label: "Design Tool", icon: Palette },
   { href: "/renovation", label: "My Renovation", icon: Hammer },
-  { href: "/ar-demo", label: "AR Demo", icon: Eye },
+  { href: "/ar-demo", label: "Generate Mockup", icon: Eye },
 ];
 
 const businessItems = [
